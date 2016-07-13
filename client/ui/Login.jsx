@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import TextField from 'material-ui/TextField';
+
 
 export default class Login extends Component {
   render() {
@@ -6,13 +8,15 @@ export default class Login extends Component {
       <div className="row">
         <form className="col s12">
           <div className="row">
-            <div className="input-field col s12">
-              <input id="first_name" type="text" className="validate" />
-              <label htmlFor="first_name">Login</label>
+            <div className="col s12">
+              <TextField hintText="Имя пользователя"/>
             </div>
-            <div className="input-field col s12">
-              <input id="password" type="password" className="validate" />
-              <label htmlFor="password">Password</label>
+            <div className="col s12">
+              <TextField
+                  hintText="Пароль"
+                  
+                  type="password"
+              />
             </div>
           </div>
         </form>

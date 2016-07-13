@@ -19,4 +19,3 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 materialize:materialize
 accounts-password
 planettraining:material-design-icons-font
-anti:i18n
