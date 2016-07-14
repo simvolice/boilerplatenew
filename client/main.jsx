@@ -1,6 +1,6 @@
 import App from './ui/App.jsx';
 
-import AddNews from './ui/AddNews.jsx';
+// import AddNews from './ui/AddNews.jsx';
 import AddBlogRecord from './ui/AddBlogRecord.jsx';
 
 import Login from './ui/Login.jsx';
@@ -21,17 +21,18 @@ import kkLocaleData from 'react-intl/locale-data/en';
 
 const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
 
-
+function requireAuth(nextState, replace) {
+    if (!Meteor.user())
+        replace('/login')
+}
 
 Meteor.startup(function() {
 
-    addLocaleData(enLocaleData);
-    addLocaleData(ruLocaleData);
-    addLocaleData(kkLocaleData);
+  addLocaleData(enLocaleData);
+  addLocaleData(ruLocaleData);
+  addLocaleData(kkLocaleData);
 
-    const {locale, messages} = window.App;
-
-    injectTapEventPlugin();
+  injectTapEventPlugin();
 
   const root = document.createElement('div');
   root.setAttribute('id', 'root');
@@ -40,14 +41,13 @@ Meteor.startup(function() {
   ReactDOM.render((
 
       <MuiThemeProvider>
-          <IntlProvider locale={locale} messages={messages}>
+          <IntlProvider locale="ru">
               
               <Router history={browserHistory}>
-                  <Route path="/" component={App}>
-                      <Route path="/" component={Login}/>
-                      <Route path="/addnews" component={AddNews}/>
-                      <Route path="/addblogrecord" component={AddBlogRecord}/>
-                  </Route>
+                  <Route path="/" component={App} onEnter={requireAuth}/>
+                  <Route path="/login" component={Login}/>
+                  {/*<Route path="/addnews" component={AddNews}/>*/}
+                  <Route path="/addblogrecord" component={AddBlogRecord}/>
               </Router>
 
           </IntlProvider>
