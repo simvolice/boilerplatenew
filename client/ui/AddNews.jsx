@@ -1,62 +1,153 @@
 import React, {Component} from 'react';
 
+
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import MdInputChips from "react-mdchips";
+import Chip from 'material-ui/Chip';
 
 import Select from 'react-select';
-
-// Be sure to include styles at some point, probably during your bootstrapping
 import 'react-select/dist/react-select.css';
-
-import {intlShape, injectIntl, defineMessages} from 'react-intl';
-
-const messages = defineMessages({
-  enUSDescription: {
-    id: 'menu.item_en_us_description',
-    defaultMessage: 'The default locale of this example app.',
-  },
-  ruRUDescription: {
-    id: 'menu.item_en_upper_description',
-    defaultMessage: 'The fake, all uppercase "locale" for this example app.',
-  },
-  kkKKDescription: {
-    id: 'menu.item_en_upper_description',
-    defaultMessage: 'The fake, all uppercase "locale" for this example app.',
-  }
-
-  
-  
-
-});
-
-class AddNews extends Component {
+export default class AddNews extends Component {
 
 
 
-   static propTypes = {
-    intl: intlShape.isRequired
-  };
 
   constructor(props) {
     super(props);
-    this.state = {value: 1};
+
+    this.state = {chipData: [
+      {key: 0, label: 'Angular'},
+      {key: 1, label: 'JQuery'},
+      {key: 2, label: 'Polymer'},
+      {key: 3, label: 'ReactJS'},
+    ],
+
+    value: 1,
+      valforchip: '',
+
+      options : [
+        { value: 'one', label: 'One' },
+        { value: 'two', label: 'Two' }
+      ]
+
+    };
+    this.styles = {
+      chip: {
+        margin: 4
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap'
+      }
+    };
+
+    this.addChip = this.addChip.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.onEnterClick = this.onEnterClick.bind(this);
+    this.handleRequestDelete = this.handleRequestDelete.bind(this);
+
   }
 
-  handleChange = (event, index, value) => this.setState({value});
+
+  onEnterClick(event){
+
+
+    //TODO потом надо доделать проверку на пустой стринг
+
+
+    if (!/\s/g.test(event.target.value)){
+
+
+      if (event.keyCode === 13) {
+
+
+        this.state.chipData.push({
+
+          key: this.state.chipData.length,
+          label: event.target.value
+
+        });
+
+        this.setState({
+          valforchip: ''
+        });
+
+
+      }
+
+
+
+
+
+
+    }
+
+
+
+
+
+  }
+
+  addChip(event){
+
+
+    this.setState({
+      valforchip: event.target.value
+    });
+
+
+
+
+  }
+
+
+
+
+  handleChange(event, index, value) {
+    return this.setState({value});
+  }
+
+   handleRequestDelete(key) {
+
+
+    this.chipData = this.state.chipData;
+     
+    const chipToDelete = this.chipData.map(chipe).indexOf(key);
+
+     function chipe(chip) {
+       return chip.key;
+     }
+     
+
+     
+    this.chipData.splice(chipToDelete, 1);
+    this.setState({chipData: this.chipData});
+  }
+
+  renderChip(data) {
+    return (
+        <Chip
+            key={data.key}
+            onRequestDelete={() => this.handleRequestDelete(data.key)}
+            style={this.styles.chip}
+        >
+          {data.label}
+        </Chip>
+    );
+  }
+
 
   render() {
 
-    const {formatMessage} = this.props.intl;
 
 
     return (
       <div className="row">
 
 
-          <div className="col s12 m6">
-            <div className="card blue-grey darken-1">
+          <div className="col s12">
+            <div className="card white darken-1">
               <div className="card-content white-text">
 
 
@@ -68,6 +159,8 @@ class AddNews extends Component {
 
                   </div>
                 </div>
+
+
 
                 <div className="row">
                   <div className="col s12">
@@ -126,19 +219,16 @@ class AddNews extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <MdInputChips
-                        placeholder="Теги"
-                        containerClassName="outer-tags-div"
-                        chips={["xx", "cv"]}
-  inputClassName="tags-input"
-  max="10"
-                    onBlur={this.onBlurEvt.bind(this)}
-                                      onEnter={this.onEnterEvt.bind(this)}
-                  />
+                    <div style={this.styles.wrapper}>
+                      {this.state.chipData.map(this.renderChip, this)}
+                    </div>
 
+                    <div className="divider"></div>
 
-
-                </div>
+                    <TextField hintText="Добавь теги" id="text-field-controlled" value={this.state.valforchip}
+                        onChange={this.addChip} onKeyDown={this.onEnterClick}
+                    />
+                  </div>
                 </div>
 
 
@@ -148,11 +238,9 @@ class AddNews extends Component {
                     <Select
                         name="form-field-name"
                         value="one"
-                        options={options}
-                        onChange={logChange}
-                        placeholder="Регион"
-                    />
+                        options={this.state.options}
 
+                    />
 
                   </div>
                 </div>
@@ -175,4 +263,3 @@ class AddNews extends Component {
 }
 
 
-export default injectIntl(AddNews);

@@ -29,7 +29,7 @@ Meteor.startup(function() {
     addLocaleData(ruLocaleData);
     addLocaleData(kkLocaleData);
 
-    const {locale, messages} = window.App;
+
 
     injectTapEventPlugin();
 
@@ -40,11 +40,11 @@ Meteor.startup(function() {
   ReactDOM.render((
 
       <MuiThemeProvider>
-          <IntlProvider locale={locale} messages={messages}>
+          <IntlProvider locale="ru">
               
               <Router history={browserHistory}>
                   <Route path="/" component={App}>
-                      <Route path="/" component={Login}/>
+                      <Route path="/login" component={Login}/>
                       <Route path="/addnews" component={AddNews}/>
                       <Route path="/addblogrecord" component={AddBlogRecord}/>
                   </Route>
