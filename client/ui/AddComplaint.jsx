@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Card, CardHeader, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
+import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
@@ -32,7 +33,7 @@ export default class AddComplaint extends Component {
   constructor(props) {
       super(props);
       this.state = {
-        rulesExpanded: true,
+        rulesOpen: false,
         appealType: null,
         questionCategory: null,
         region: null,
@@ -90,7 +91,23 @@ export default class AddComplaint extends Component {
     this.setState({district});
   }
 
+  openRules() {
+    this.setState({rulesOpen: true});
+  }
+
+  closeRules() {
+    this.setState({rulesOpen: false});
+  }
+
   render() {
+    const modalActions = [
+      <FlatButton
+        label="Прочитал"
+        primary={true}
+        onTouchTap={this.closeRules.bind(this)}
+      />
+    ];
+
     return (
       <div className="container">
         <Card className="row top-buffer">
@@ -205,6 +222,7 @@ export default class AddComplaint extends Component {
                   onChange={this.handleRChange.bind(this)}
                   fullWidth={true}
                   floatingLabelText="Выберите область"
+                >
                   {this.getRegions()}
                 </SelectField>
               </div>
@@ -247,7 +265,35 @@ export default class AddComplaint extends Component {
             <FlatButton label="Нажимая кнопку" disabled={true} />
             <RaisedButton label="подать обращение" primary={true} />,
             <FlatButton label="вы соглашаетесь с" disabled={true} />
-            <FlatButton label="правилами подачи обращения" />.
+            <FlatButton label="правилами подачи обращения" onClick={this.openRules.bind(this)} />.
+            <Dialog
+              title="Правила подачи обращения"
+              subtitle="Уважаемый посетитель!"
+              modal={true}
+              open={this.state.rulesOpen}
+              autoScrollBodyContent={true}
+              actions={modalActions}
+            >
+              Перед подачей обращения, ознакомьтесь с правилами подачи обращений:
+              Не рассматриваются вопросы:
+              Анонимные, за исключением отдельных случаев
+              Содержащие нецензурные выражения
+              Содержащие нечитаемый текст и непонятные сокращения
+              Премодерация:
+              Обращение будет обработано модератором сайта, а также может быть подвергнуто коррекции согласно нормам этики и правилам
+              правописания. Только после этого заявление будет опубликовано, включая, но не ограничиваясь следующими правками:
+              Из текста обращения могут быть исключены сведения оскорбительного характера, содержащие клевету, порочащие сведения и иную
+              информацию, наносящую вред чести, достоинству и деловой репутации, либо сообщения, используемые в целях диффамации
+              Из текста обращения могут быть исключены его составные части: сведения, направленные на разжигание и возбуждение социальной,
+              расовой, национальной, религиозной, сословной и родовой розни, предполагающие дискриминацию по мотивам происхождения,
+              социального, должностного и имущественного положения, пола, расы, национальности, языка, отношения к религии. Убеждения,
+              содержащие призывы к насильственному изменению конституционного строя и нарушению территориальной целостности Республики,
+              вызывающие угрозу безопасности, жизни, здоровью, нравственности населения будут удалены.
+              Как правило, модерация обращения и подготовка даже промежуточного ответа на него занимает определенное время. В связи с чем, могут
+              быть не приняты повторные (дублирующие) обращения, либо уточняющие причину не размещения ранее поданных заявлений или статус
+              их текущей модерации.
+              Ответ на Ваше обращение будет направлен Вам только в электронном виде.
+            </Dialog>
           </CardActions>
         </Card>
       </div>
