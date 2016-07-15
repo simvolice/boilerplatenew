@@ -3,8 +3,6 @@ import App from './ui/App.jsx';
 import AddNews from './ui/AddNews.jsx';
 import AddBlogRecord from './ui/AddBlogRecord.jsx';
 
-import Login from './ui/Login.jsx';
-
 import React from 'react';
 import ReactRouter from 'react-router';
 import ReactDOM from 'react-dom';
@@ -45,7 +43,6 @@ Meteor.startup(function() {
               
               <Router history={browserHistory}>
                   <Route path="/" component={App} />
-                  <Route path="/login" component={Login}/>
                   <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
                   <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
               </Router>

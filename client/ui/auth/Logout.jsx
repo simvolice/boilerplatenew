@@ -8,7 +8,10 @@ export default class Logout extends Component {
       return false
   
     console.log('LOgging out wiz '+Meteor.userId());
-    Meteor.logout();
+    Meteor.logout(function(err){
+      browserHistory.push('/')
+    });
+    
   }
 
   render(){
