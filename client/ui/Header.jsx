@@ -2,13 +2,11 @@ import React, {Component} from 'react';
 
 
 export default class Header extends Component {
-    
-    componentDidMount(){
 
+    componentDidMount(){
         $(".dropdown-button").dropdown();
-        
     }
-    
+
   render() {
     return (
 
@@ -24,6 +22,7 @@ export default class Header extends Component {
               <ul className="right hide-on-med-and-down">
 
                 {/* Dropdown Trigger */}
+                <li><a className="button" href="/addcomplaint">Жалобы</a></li>
                 <li><a className="dropdown-button" href="#!" data-activates="dropdown1">Работа с новостями<i className="material-icons right">arrow_drop_down</i></a></li>
               </ul>
 
@@ -31,8 +30,6 @@ export default class Header extends Component {
                 <li><a href="#">Navbar Link</a></li>
               </ul>
               <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
-
-
 
             </div>
           </nav>

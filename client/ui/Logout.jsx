@@ -3,10 +3,10 @@ import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router'
 
 export default class Logout extends Component {
-  logout() { 
+  logout() {
     if(!Meteor.userId())
       return false
-  
+
     console.log('LOgging out wiz '+Meteor.userId());
     Meteor.logout();
   }

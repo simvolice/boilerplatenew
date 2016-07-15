@@ -11,8 +11,6 @@ import 'react-select/dist/react-select.css';
 export default class AddNews extends Component {
 
 
-
-
   constructor(props) {
     super(props);
 
@@ -112,15 +110,15 @@ export default class AddNews extends Component {
 
 
     this.chipData = this.state.chipData;
-     
+
     const chipToDelete = this.chipData.map(chipe).indexOf(key);
 
      function chipe(chip) {
        return chip.key;
      }
-     
 
-     
+
+
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
   }
@@ -261,5 +259,3 @@ export default class AddNews extends Component {
     );
   }
 }
-
-
