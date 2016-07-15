@@ -8,9 +8,9 @@ import Chip from 'material-ui/Chip';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+
+
 export default class AddNews extends Component {
-
-
 
 
   constructor(props) {
@@ -105,22 +105,17 @@ export default class AddNews extends Component {
 
 
   handleChange(event, index, value) {
+    console.log('handleChange :'+value)
     return this.setState({value});
   }
 
-   handleRequestDelete(key) {
-
-
+  handleRequestDelete(key) {
     this.chipData = this.state.chipData;
-     
     const chipToDelete = this.chipData.map(chipe).indexOf(key);
+    function chipe(chip) {
+      return chip.key;
+    }
 
-     function chipe(chip) {
-       return chip.key;
-     }
-     
-
-     
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
   }

@@ -6,8 +6,7 @@ export default class Logout extends Component {
   logout() { 
     if(!Meteor.userId())
       return false
-  
-    console.log('LOgging out wiz '+Meteor.userId());
+
     Meteor.logout(function(err){
       browserHistory.push('/')
     });

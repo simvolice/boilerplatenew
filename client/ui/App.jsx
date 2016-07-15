@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
-import Header from './Header.jsx';
-import Footer from './Footer.jsx';
+import Header from './shared/Header.jsx';
+import Footer from './shared/Footer.jsx';
+
 import AuthBox from './auth/AuthBox.jsx';
 
 export default class App extends Component {

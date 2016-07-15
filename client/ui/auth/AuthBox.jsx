@@ -5,8 +5,6 @@ import Logout from './Logout.jsx';
 export default class AuthBox extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
-    console.log('UserList constructor called');
   }
 
   render() {

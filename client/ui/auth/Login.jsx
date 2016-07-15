@@ -29,9 +29,7 @@ export default class Login extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    console.log("SignIn with "+this.state.email);
-    // // Here, we call an external AuthService. We’ll create it in the next step
-
+    
     if(!this.state.email || !this.state.password)
       return
 

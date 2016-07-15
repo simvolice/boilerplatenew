@@ -21,7 +21,7 @@ const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
 
 function requireAuth(nextState, replace) {
   if (!Meteor.user())
-    replace('/login')
+    replace('/')
 }
 
 Meteor.startup(function() {
