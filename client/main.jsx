@@ -4,8 +4,6 @@ import AddNews from './ui/AddNews.jsx';
 import AddBlogRecord from './ui/AddBlogRecord.jsx';
 import AddComplaint from './ui/AddComplaint.jsx';
 
-import Login from './ui/Login.jsx';
-
 import React from 'react';
 import ReactRouter from 'react-router';
 import ReactDOM from 'react-dom';
@@ -24,7 +22,7 @@ const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
 
 function requireAuth(nextState, replace) {
   if (!Meteor.user())
-    replace('/login')
+    replace('/')
 }
 
 Meteor.startup(function() {
@@ -46,7 +44,6 @@ Meteor.startup(function() {
 
               <Router history={browserHistory}>
                   <Route path="/" component={App} />
-                  <Route path="/login" component={Login}/>
                   <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
                   <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
                   <Route path="/addcomplaint" component={AddComplaint}/>

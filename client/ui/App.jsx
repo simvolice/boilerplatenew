@@ -1,18 +1,11 @@
 import React, {Component} from 'react';
 
-import Header from './Header.jsx';
-import Footer from './Footer.jsx';
-import Login from './Login.jsx';
-import Logout from './Logout.jsx';
+import Header from './shared/Header.jsx';
+import Footer from './shared/Footer.jsx';
+
+import AuthBox from './auth/AuthBox.jsx';
 
 export default class App extends Component {
-  AuthBox() {
-    if(Meteor.userId()){
-      return <Logout />
-    } else {
-      return <Login />
-    }
-  }
 
   render() {
     return (
@@ -23,7 +16,7 @@ export default class App extends Component {
 
         
         <div className="container">
-          {this.AuthBox()}
+          <AuthBox />
           {this.props.children}
 
           
