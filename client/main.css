@@ -4,3 +4,6 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+.top-buffer {
+  margin-top: 2em;
+}
