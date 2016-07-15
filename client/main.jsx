@@ -21,7 +21,7 @@ import kkLocaleData from 'react-intl/locale-data/en';
 const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
 
 function requireAuth(nextState, replace) {
-  if (!Meteor.user())
+  if (!Meteor.userId())
     replace('/')
 }
 
@@ -43,10 +43,12 @@ Meteor.startup(function() {
           <IntlProvider locale="ru">
 
               <Router history={browserHistory}>
-                  <Route path="/" component={App} />
-                  <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
-                  <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
-                  <Route path="/addcomplaint" component={AddComplaint}/>
+                  <Route path="/" component={App}>
+                    <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
+                    <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
+                    <Route path="/addcomplaint" component={AddComplaint}/>                  
+                  </Route>
+
               </Router>
 
           </IntlProvider>
