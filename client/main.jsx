@@ -21,17 +21,18 @@ import kkLocaleData from 'react-intl/locale-data/en';
 
 const {Router, Route, IndexRoute, browserHistory} = ReactRouter;
 
-
+function requireAuth(nextState, replace) {
+  if (!Meteor.user())
+    replace('/login')
+}
 
 Meteor.startup(function() {
 
-    addLocaleData(enLocaleData);
-    addLocaleData(ruLocaleData);
-    addLocaleData(kkLocaleData);
+  addLocaleData(enLocaleData);
+  addLocaleData(ruLocaleData);
+  addLocaleData(kkLocaleData);
 
-
-
-    injectTapEventPlugin();
+  injectTapEventPlugin();
 
   const root = document.createElement('div');
   root.setAttribute('id', 'root');
@@ -43,11 +44,10 @@ Meteor.startup(function() {
           <IntlProvider locale="ru">
               
               <Router history={browserHistory}>
-                  <Route path="/" component={App}>
-                      <Route path="/login" component={Login}/>
-                      <Route path="/addnews" component={AddNews}/>
-                      <Route path="/addblogrecord" component={AddBlogRecord}/>
-                  </Route>
+                  <Route path="/" component={App} />
+                  <Route path="/login" component={Login}/>
+                  <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
+                  <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
               </Router>
 
           </IntlProvider>

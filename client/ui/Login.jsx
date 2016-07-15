@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import { browserHistory } from 'react-router'
 
 export default class email extends Component {
 
@@ -24,9 +25,14 @@ export default class email extends Component {
     e.preventDefault();
     console.log("SignIn with "+this.state.email);
     // // Here, we call an external AuthService. We’ll create it in the next step
-    Meteor.loginWithPassword(this.state.email, this.state.password).catch(function(err) {
-      console.log(err);
+
+    if(!this.state.email || !this.state.password)
+      return
+    
+    Meteor.loginWithPassword(this.state.email, this.state.password, function(error){
+      browserHistory.push('/addnews')
     });
+
 
   }
 
@@ -49,6 +55,6 @@ export default class email extends Component {
           </div>
         </form>
       </div>
-    );
+  );
   }
 }
