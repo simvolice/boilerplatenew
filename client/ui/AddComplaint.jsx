@@ -98,7 +98,7 @@ export default class AddComplaint extends Component {
           <CardText expandable={true}>
             <div className="row">
               <div className="col s12">
-              <SelectField value={this.state.value} 'Образование' onChange={this.handleChange}>
+              <SelectField value={this.state.value} onChange={this.handleChange}>
                 <MenuItem value={1} primaryText="Never" />
                 <MenuItem value={2} primaryText="Every Night" />
                 <MenuItem value={3} primaryText="Weeknights" />

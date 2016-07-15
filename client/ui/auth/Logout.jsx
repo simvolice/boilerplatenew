@@ -7,7 +7,7 @@ export default class Logout extends Component {
     if(!Meteor.userId())
       return false
     Meteor.logout(function(err){
-      browserHistory.push('/')
+      browserHistory.push('/');
     });
   }
 
@@ -21,5 +21,33 @@ export default class Logout extends Component {
         </form>
       </div>
    )
+  }
+}
+
+
+export default class LogoutButton extends Component {
+
+  constructor(props)  {
+    super(props)
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    if(!Meteor.userId())
+      return false
+    Meteor.logout(function(err){
+      browserHistory.push('/');
+    });
+  }
+
+  render(){
+    if(Meteor.userId()){
+      return(
+        <a href='' className="button" onClick={this.handleClick}>Выход</a>
+        )
+    } else  {
+      return null
+    }
   }
 }
