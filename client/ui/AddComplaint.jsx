@@ -205,7 +205,6 @@ export default class AddComplaint extends Component {
                   onChange={this.handleRChange.bind(this)}
                   fullWidth={true}
                   floatingLabelText="Выберите область"
-                >
                   {this.getRegions()}
                 </SelectField>
               </div>
