@@ -5,8 +5,9 @@ import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import { findDOMNode } from 'react-dom'
 import Snackbar from 'material-ui/Snackbar';
-
+import LanguageSelect from '../shared/LanguageSelect.jsx';
 import {BlogRecords} from '../../../api/site/blog/BlogRecords.js';
+
 Meteor.subscribe('blog_records');
 
 export default class AddBlogRecord extends Component {
@@ -26,7 +27,7 @@ export default class AddBlogRecord extends Component {
         {key: 3, label: 'ReactJS'},
       ],
 
-      record_langauge: 1,
+      language: 1,
       valforchip: '',
 
       options : [
@@ -56,25 +57,20 @@ export default class AddBlogRecord extends Component {
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
   }
 
-  componentDidMoun(){
-    this.widget = uploadcare.Widget('[role=uploadcare-uploader]');
+  handleNotificationClose(event) { this.setState({open: false}); }
 
-    this.widget.onUploadComplete(function(fileInfo) {
-      console.log('fileInfo', fileInfo);
-      console.log('file UUID', fileInfo.uuid);
-      console.log('fileInfo.originalUrl', fileInfo.originalUrl); // Public CDN URL of the uploaded file, without any operations.
-    });    
-  }
+  addChip(event){ this.setState({ valforchip: event.target.value }); }
+  
+  onEnterEvt(){ console.log(this.refs.recordTags.props.chips); }
+  
+  handleLanguageChange(language) { this.setState({language: language}); }
 
-  handleNotificationClose(event) {
-    this.setState({open: false});
-  }
+  handleChange(event){ this.setState({[event.target.getAttribute('data-name')]: event.target.value }); }
 
-  addChip(event){
-    this.setState({
-      valforchip: event.target.value
-    });
-  }
+  onClickEvt(){ console.log('Add new blog record'); }
+
+  onBlurEvt(){ console.log("onBlurEvt"); }
+
 
   onEnterClick(event){
     //TODO потом надо доделать проверку на пустой стринг
@@ -110,18 +106,6 @@ export default class AddBlogRecord extends Component {
     this.setState({chipData: this.chipData});
   }
 
-  onClickEvt(){
-    console.log('Add new blog record');
-  }
-
-  onBlurEvt(){
-    console.log("onBlurEvt");
-  }
-
-  onEnterEvt(){
-    console.log("onEnterEvt");
-    console.log(this.refs.recordTags.props.chips);
-  }
 
   renderChip(data) {
     return (
@@ -135,16 +119,13 @@ export default class AddBlogRecord extends Component {
     );
   }
 
-  handleLanguageChange(event, index, value) { this.setState({record_langauge: value}); }
-
-  handleChange(event){ this.setState({[event.target.getAttribute('data-name')]: event.target.value }); }
 
   add_record(){
     new_record = {
-      title: this.state.record_title,
-      text: this.state.record_text,
+      title: this.state.title,
+      text: this.state.text,
       tags: [],
-      language: this.state.record_langauge,
+      language: this.state.language,
       createdAt: new Date()
     }
 
@@ -159,10 +140,10 @@ export default class AddBlogRecord extends Component {
       console.log(this.state);
       this.state.record_title = '';
       this.setState({open: true});
-      this.setState({record_title: ''});
-      this.setState({record_text: ''});
+      this.setState({title: ''});
+      this.setState({text: ''});
       this.setState({chipData: []});
-      this.setState({record_langauge: 1})
+      this.setState({language: 1})
     }
   }
 
@@ -185,7 +166,7 @@ export default class AddBlogRecord extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TextField hintText="Заголовок" data-name="record_title" onChange={this.handleChange} />
+                    <TextField hintText="Заголовок" data-name="title" onChange={this.handleChange} />
 
                   </div>
                 </div>
@@ -193,20 +174,7 @@ export default class AddBlogRecord extends Component {
                 {/* Record language */}
                 <div className="row">
                   <div className="col s12">
-
-                    <SelectField
-                        value={this.state.record_langauge}
-                        onChange={this.handleLanguageChange}
-                        autoWidth={true}
-                        floatingLabelText="Язык"
-                    >
-                      <MenuItem value={1} primaryText="Русский язык" />
-                      <MenuItem value={2} primaryText="Казахский язык" />
-                      <MenuItem value={3} primaryText="Английский язык" />
-
-                    </SelectField>
-
-
+                    <LanguageSelect handler={this.handleLanguageChange}/>
                   </div>
                 </div>
 
@@ -219,7 +187,7 @@ export default class AddBlogRecord extends Component {
                         multiLine={true}
                         rows={2}
                         rowsMax={4}
-                        data-name="record_text"
+                        data-name="text"
                         onChange={this.handleChange}
                     />
 
@@ -234,7 +202,6 @@ export default class AddBlogRecord extends Component {
                       <div className="btn">
                         <span>Выбери фотографию</span>
                         <input type="file" ref="recordImage"/>
-                        <input type="hidden" name="picture" role="uploadcare-uploader" data-crop />
                       </div>
 
                       <div className="file-path-wrapper">

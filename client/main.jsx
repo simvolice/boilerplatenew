@@ -1,6 +1,6 @@
 import App from './ui/App.jsx';
 
-import AddNews from './ui/AddNews.jsx';
+import AddNews from './ui/news/AddNews.jsx';
 import AddBlogRecord from './ui/blog/AddBlogRecord.jsx';
 import AddComplaint from './ui/site/AddComplaint.jsx';
 
