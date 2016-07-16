@@ -57,6 +57,16 @@ export default class AddBlogRecord extends Component {
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
   }
 
+  componentDidMoun(){
+    this.widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+    this.widget.onUploadComplete(function(fileInfo) {
+      console.log('fileInfo', fileInfo);
+      console.log('file UUID', fileInfo.uuid);
+      console.log('fileInfo.originalUrl', fileInfo.originalUrl); // Public CDN URL of the uploaded file, without any operations.
+    });    
+  }
+
   handleNotificationClose(event) {
     this.setState({open: false});
   }
@@ -160,15 +170,16 @@ export default class AddBlogRecord extends Component {
   render() {
     return (
         <div className="row">
+          {/* Notification */}
           <Snackbar
             open={this.state.open}
             message="Запись в блог добавлена"
             autoHideDuration={4000}
             onRequestClose={this.handleNotificationClose}
-          />        
-          <div className="col s12 m6">
-            <div className="card blue-grey darken-1">
+          />
 
+          <div className="col s12 m12">
+            <div className="card">
               <div className="card-content white-text">
 
                 {/* Record title */}
@@ -213,7 +224,6 @@ export default class AddBlogRecord extends Component {
                         onChange={this.handleChange}
                     />
 
-
                   </div>
                 </div>
 
@@ -225,7 +235,9 @@ export default class AddBlogRecord extends Component {
                       <div className="btn">
                         <span>Выбери фотографию</span>
                         <input type="file" ref="recordImage"/>
+                        <input type="hidden" name="picture" role="uploadcare-uploader" data-crop />
                       </div>
+
                       <div className="file-path-wrapper">
                         <input className="file-path validate" type="text" />
                       </div>

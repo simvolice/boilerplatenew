@@ -10,6 +10,7 @@ if(Meteor.isServer) {
 
   BlogRecords.allow({
     'insert': function (userId,doc) {
+      console.log('User with id : '+userId);
       return true; 
     }
   });
