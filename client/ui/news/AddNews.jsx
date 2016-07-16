@@ -84,10 +84,7 @@ export default class AddNews extends Component {
     });
   }
 
-  handleChange(event, index, value) {
-    console.log('handleChange :'+value)
-    return this.setState({value});
-  }
+  handleChange(event, index, value) { this.setState({value}); }
 
   handleDynamicChange(event){ this.setState({[event.target.getAttribute('data-name')]: event.target.value }); }
 
@@ -122,7 +119,6 @@ export default class AddNews extends Component {
   // will called from child LanguageSelect component with language_id
   handleLanguageChange(language) { this.setState({language: language}); }
 
-
   add_news_record(){
     new_record = {
       title: this.state.title,
@@ -137,16 +133,9 @@ export default class AddNews extends Component {
 
     // debug
     console.log(new_record);
-    console.log(this.refs);
 
     if(NewsRecords.insert(new_record)){
-      console.log(this.state);
-      this.state.record_title = '';
       this.setState({open: true});
-      this.setState({record_title: ''});
-      this.setState({record_text: ''});
-      this.setState({chipData: []});
-      this.setState({record_langauge: 1})
     }
   }
 
@@ -211,7 +200,7 @@ export default class AddNews extends Component {
                   </div>
                 </div>
 
-
+                {/* News tags. I think we should out to component like LanguageSelect */}
                 <div className="row">
                   <div className="col s12">
 
@@ -224,30 +213,24 @@ export default class AddNews extends Component {
                     <TextField hintText="Добавь теги" id="text-field-controlled" value={this.state.valforchip}
                         onChange={this.addChip} onKeyDown={this.onEnterClick}
                     />
+
                   </div>
                 </div>
 
 
                 <div className="row">
                   <div className="col s12">
-
-                    <Select
-                        name="form-field-name"
-                        value="one"
-                        options={this.state.options}
-
-                    />
-
+                    <Select name="form-field-name" value="one" options={this.state.options}/>
                   </div>
                 </div>
 
 
-
               </div>
+
               <div className="card-action">
                 <a onClick={this.add_news_record}>Сохранить новость</a>
-
               </div>
+
             </div>
           </div>
 

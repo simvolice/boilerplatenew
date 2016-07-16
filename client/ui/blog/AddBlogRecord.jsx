@@ -138,12 +138,7 @@ export default class AddBlogRecord extends Component {
 
     if(BlogRecords.insert(new_record)){
       console.log(this.state);
-      this.state.record_title = '';
       this.setState({open: true});
-      this.setState({title: ''});
-      this.setState({text: ''});
-      this.setState({chipData: []});
-      this.setState({language: 1})
     }
   }
 
