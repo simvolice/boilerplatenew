@@ -3,11 +3,12 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
-import MdInputChips from "react-mdchips";
+import { findDOMNode } from 'react-dom'
 
 export const Tasks = new Mongo.Collection('blog_records');
 
 export default class AddBlogRecord extends Component {
+
   constructor(props) {
     super(props);
 
@@ -39,17 +40,88 @@ export default class AddBlogRecord extends Component {
       }
     };
 
+    this.addChip = this.addChip.bind(this);
     this.onBlurEvt = this.onBlurEvt.bind(this);
     this.onEnterEvt = this.onEnterEvt.bind(this);
+    this.onClickEvt = this.onClickEvt.bind(this);
+    this.onEnterClick = this.onEnterClick.bind(this);
+    this.handleRequestDelete = this.handleRequestDelete.bind(this);
+  }
+  
+  addChip(event){
+    this.setState({
+      valforchip: event.target.value
+    });
   }
 
+  onEnterClick(event){
+    //TODO потом надо доделать проверку на пустой стринг
 
+    if (!/\s/g.test(event.target.value)){
+
+      if (event.keyCode === 13) {
+        this.state.chipData.push({
+          key: this.state.chipData.length,
+          label: event.target.value
+        });
+
+        this.setState({
+          valforchip: ''
+        });
+      }
+    }
+  }
+
+  handleRequestDelete(key) {
+    this.chipData = this.state.chipData;
+
+    const chipToDelete = this.chipData.map(chipe).indexOf(key);
+    function chipe(chip) {
+      return chip.key;
+    }
+
+     function chipe(chip) {
+       return chip.key;
+     }
+
+    this.chipData.splice(chipToDelete, 1);
+    this.setState({chipData: this.chipData});
+  }
+
+  onClickEvt(){
+    console.log('Add new blog record');
+  }
 
   onBlurEvt(){
     console.log("onBlurEvt");
   }
+
   onEnterEvt(){
     console.log("onEnterEvt");
+    console.log(this.refs.recordTags.props.chips);
+  }
+
+  renderChip(data) {
+    return (
+        <Chip
+            key={data.key}
+            onRequestDelete={() => this.handleRequestDelete(data.key)}
+            style={this.styles.chip}
+        >
+          {data.label}
+        </Chip>
+    );
+  }
+
+  add_record(){
+    console.log('Add record');
+    [
+      'recordTitle', 'recordTags', 
+      'recordLanguage', 'recordText', 
+      'recordImage', 'recordTags'
+    ].map(record_attr => 
+      console.log(record_attr+' is '+this.refs[record_attr].getValue())
+    );
   }
 
   render() {
@@ -65,7 +137,10 @@ export default class AddBlogRecord extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TextField hintText="Заголовок"/>
+                    <TextField 
+                      hintText="Заголовок"
+                      ref="recordTitle"
+                    />
 
 
                   </div>
@@ -79,6 +154,7 @@ export default class AddBlogRecord extends Component {
                         onChange={this.handleChange}
                         autoWidth={true}
                         floatingLabelText="Язык"
+                        ref="recordLanguage"
                     >
                       <MenuItem value={1} primaryText="Русский язык" />
                       <MenuItem value={2} primaryText="Казахский язык" />
@@ -99,6 +175,7 @@ export default class AddBlogRecord extends Component {
                         multiLine={true}
                         rows={2}
                         rowsMax={4}
+                        ref="recordText"
                     />
 
 
@@ -112,7 +189,7 @@ export default class AddBlogRecord extends Component {
                     <div className="file-field input-field">
                       <div className="btn">
                         <span>Выбери фотографию</span>
-                        <input type="file" />
+                        <input type="file" ref="recordImage"/>
                       </div>
                       <div className="file-path-wrapper">
                         <input className="file-path validate" type="text" />
@@ -128,17 +205,15 @@ export default class AddBlogRecord extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <MdInputChips
-                        placeholder="Теги"
-                        containerClassName="outer-tags-div"
-                        chips={["xx", "cv"]}
-                        inputClassName="tags-input"
-                        max="10"
-                        onBlur={this.onBlurEvt.bind(this)}
-                        onEnter={this.onEnterEvt.bind(this)}
+                    <div style={this.styles.wrapper}>
+                      {this.state.chipData.map(this.renderChip, this)}
+                    </div>
+
+                    <div className="divider"></div>
+
+                    <TextField hintText="Добавь теги" id="text-field-controlled" value={this.state.valforchip}
+                        onChange={this.addChip} onKeyDown={this.onEnterClick}
                     />
-
-
 
                   </div>
                 </div>
@@ -149,7 +224,7 @@ export default class AddBlogRecord extends Component {
 
               </div>
               <div className="card-action">
-                <a href="#">Создать запись</a>
+                <a onClick={this.add_record.bind(this)}>Создать запись</a>
 
               </div>
             </div>

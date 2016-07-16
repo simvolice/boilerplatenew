@@ -8,6 +8,9 @@ import Chip from 'material-ui/Chip';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import TinyMCE from 'react-tinymce';
+
+
 
 export default class AddNews extends Component {
 
@@ -48,6 +51,11 @@ export default class AddNews extends Component {
   }
 
 
+
+  handleEditorChange(e) {
+    console.log('Content was updated:', e.target.getContent());
+  }
+
   onEnterClick(event){
 
 
@@ -80,27 +88,13 @@ export default class AddNews extends Component {
 
 
     }
-
-
-
-
-
   }
 
   addChip(event){
-
-
     this.setState({
       valforchip: event.target.value
     });
-
-
-
-
   }
-
-
-
 
   handleChange(event, index, value) {
     console.log('handleChange :'+value)
@@ -115,9 +109,9 @@ export default class AddNews extends Component {
       return chip.key;
     }
 
-     function chipe(chip) {
-       return chip.key;
-     }
+    function chipe(chip) {
+      return chip.key;
+    }
 
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
@@ -183,11 +177,13 @@ export default class AddNews extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TextField
-                        hintText="Текст"
-                        multiLine={true}
-                        rows={2}
-                        rowsMax={4}
+                    <TinyMCE
+                        content="<p>This is the initial content of the editor</p>"
+                        config={{
+          plugins: 'code',
+          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+        }}
+                        onChange={this.handleEditorChange}
                     />
 
 
