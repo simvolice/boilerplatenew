@@ -53,12 +53,11 @@ export default class AddBlogRecord extends Component {
     this.handleRequestDelete = this.handleRequestDelete.bind(this);
     this.handleNotificationClose = this.handleNotificationClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleLanguageChange = this.handleLanguageChange.bind(this);
   }
 
   handleNotificationClose(event) {
-    this.setState({
-      open: false,
-    });
+    this.setState({open: false});
   }
 
   addChip(event){
@@ -126,10 +125,9 @@ export default class AddBlogRecord extends Component {
     );
   }
 
-  handleChange(event){
-    console.log(event.target.value);
-    this.setState({value: event.target.value});
-  }
+  handleLanguageChange(event, index, value) { this.setState({record_langauge: value}); }
+
+  handleChange(event){ this.setState({[event.target.getAttribute('data-name')]: event.target.value }); }
 
   add_record(){
     new_record = {
@@ -148,13 +146,13 @@ export default class AddBlogRecord extends Component {
     console.log(this.refs);
 
     if(BlogRecords.insert(new_record)){
-      this.setState({
-        open: true,
-        record_title: '',
-        record_text: '',
-        record_tags: [],
-        record_langauge: 1
-      });
+      console.log(this.state);
+      this.state.record_title = '';
+      this.setState({open: true});
+      this.setState({record_title: ''});
+      this.setState({record_text: ''});
+      this.setState({chipData: []});
+      this.setState({record_langauge: 1})
     }
   }
 
@@ -175,7 +173,9 @@ export default class AddBlogRecord extends Component {
                 {/* Record title */}
                 <div className="row">
                   <div className="col s12">
-                    <TextField hintText="Заголовок" onChange={this.handleChange} />
+
+                    <TextField hintText="Заголовок" data-name="record_title" onChange={this.handleChange} />
+
                   </div>
                 </div>
 
@@ -184,10 +184,10 @@ export default class AddBlogRecord extends Component {
                   <div className="col s12">
 
                     <SelectField
-                        onChange={this.handleChange}
+                        value={this.state.record_langauge}
+                        onChange={this.handleLanguageChange}
                         autoWidth={true}
                         floatingLabelText="Язык"
-                        ref="recordLanguage"
                     >
                       <MenuItem value={1} primaryText="Русский язык" />
                       <MenuItem value={2} primaryText="Казахский язык" />
@@ -208,6 +208,7 @@ export default class AddBlogRecord extends Component {
                         multiLine={true}
                         rows={2}
                         rowsMax={4}
+                        data-name="record_text"
                         onChange={this.handleChange}
                     />
 
