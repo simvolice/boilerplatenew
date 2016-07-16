@@ -1,7 +1,7 @@
 import App from './ui/App.jsx';
 
 import AddNews from './ui/AddNews.jsx';
-import AddBlogRecord from './ui/AddBlogRecord.jsx';
+import AddBlogRecord from './ui/blog/AddBlogRecord.jsx';
 import AddComplaint from './ui/AddComplaint.jsx';
 
 import React from 'react';

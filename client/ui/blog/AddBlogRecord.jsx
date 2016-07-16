@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 
-export default class AddBlogRecord extends Component {
-  add_record(){
-    console.log('Inserting new blog record');
-  }
+export const Tasks = new Mongo.Collection('blog_records');
 
+export default class AddBlogRecord extends Component {
   render() {
     return (
         <div className="row">
@@ -102,7 +100,7 @@ export default class AddBlogRecord extends Component {
 
               </div>
               <div className="card-action">
-                <a href="#" onClick={this.add_record()}>Создать запись</a>
+                <a href="#">Создать запись</a>
 
               </div>
             </div>
