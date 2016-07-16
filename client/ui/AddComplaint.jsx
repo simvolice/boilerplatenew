@@ -25,7 +25,7 @@ const styles = {
     marginBottom: 16
   },
   card: {
-    height: 300
+    height: 350
   }
 };
 
@@ -113,7 +113,7 @@ export default class AddComplaint extends Component {
         <Card className="row top-buffer">
           <CardTitle
             title="Обещственная приемная"
-            subtitle="Электронная общественная приемная парии Нуротан"
+            subtitle="Электронная общественная приемная партии Нуротан"
           />
         </Card>
         <Card className="row">
