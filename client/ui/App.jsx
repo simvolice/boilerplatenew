@@ -10,6 +10,7 @@ export default class App extends Component {
       <div>
        <Header />
         <div className="container">
+
           <AuthBox />
           {this.props.children}
         </div>

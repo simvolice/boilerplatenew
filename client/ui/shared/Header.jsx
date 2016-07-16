@@ -19,6 +19,7 @@ export default class Header extends Component {
         <div>
           {/* Dropdown Structure */}
           <ul id="news_dropdown" className="dropdown-content">
+            <li><a href="/listnews">Новости</a></li>
             <li><a href="/addnews">Добавить новость</a></li>
           </ul>
 

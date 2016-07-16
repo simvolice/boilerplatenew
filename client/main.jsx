@@ -4,6 +4,8 @@ import AddNews from './ui/news/AddNews.jsx';
 import AddBlogRecord from './ui/blog/AddBlogRecord.jsx';
 import AddComplaint from './ui/site/AddComplaint.jsx';
 
+import ListNews from './ui/news/ListNews.jsx';
+
 import React from 'react';
 import ReactRouter from 'react-router';
 import ReactDOM from 'react-dom';
@@ -45,6 +47,7 @@ Meteor.startup(function() {
               <Router history={browserHistory}>
                   <Route path="/" component={App}>
                     <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
+                    <Route path="/listnews" component={ListNews} />
                     <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
                     <Route path="/addcomplaint" component={AddComplaint}/>
                   </Route>
