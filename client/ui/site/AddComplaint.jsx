@@ -48,25 +48,32 @@ export default class AddComplaint extends Component {
 
       this.state = {
         rulesOpen: false,
-        categoryNames: [],
+        subCategoryNames: []
       };
-
-      let categoryNames = [];
-
-      this.props.categories.forEach((category) => {
-        categoryNames.push({
-          text: category.name_ru,
-          value: category._id
-        });
-      });
-
-      this.setState({categoryNames});
   }
 
-  renderCategories() {
-    return this.props.categories.map((category) => (
-      <MenuItem key={category._id} value={category._id} primaryText={category.name_ru} />,
-    ));
+  getCategoryNames() {
+    return this.props.categories.map((category) => {
+      return {
+        text: category.name_ru,
+        value: category._id
+      }
+    });
+  }
+
+  handleCategoryUpdate(value) {
+    const currentCategory = this.props.categories.filter((category) => {
+      return category._id === value.value;
+    });
+
+    const subCategoryNames = currentCategory[0].sub_category_ru.map((subCategory, index) => {
+      return {
+        text: subCategory,
+        value: index
+      };
+    });
+
+    this.setState({subCategoryNames});
   }
 
   renderRegions() {
@@ -75,13 +82,7 @@ export default class AddComplaint extends Component {
     ));
   }
 
-  handleATChange(event, index, appealType) {
-    this.setState({appealType});
-  }
 
-  handleQCChange(event, index, questionCategory) {
-    this.setState({questionCategory});
-  }
 
   handleRChange(event, index, region) {
     this.setState({region});
@@ -121,18 +122,19 @@ export default class AddComplaint extends Component {
           <CardText className="row">
             <div className="col s6">
               <AutoComplete
-                hintText="Type anything"
-                dataSource={this.state.categoryNames}
-                fullWidth={true}
-                openOnFocus={true}
+               floatingLabelText="showAllItems"
+               filter={AutoComplete.caseInsensitiveFilter}
+               openOnFocus={true}
+               dataSource={this.getCategoryNames()}
+               onNewRequest={this.handleCategoryUpdate.bind(this)}
               />
             </div>
             <div className="col s6">
               <AutoComplete
-                hintText="Type anything"
-                dataSource={this.state.categoryNames}
-                fullWidth={true}
+                floatingLabelText="showAllItems"
+                filter={AutoComplete.caseInsensitiveFilter}
                 openOnFocus={true}
+                dataSource={this.state.subCategoryNames}
               />
             </div>
           </CardText>

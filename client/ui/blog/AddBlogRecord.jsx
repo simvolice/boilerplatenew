@@ -15,6 +15,9 @@ export default class AddBlogRecord extends Component {
     super(props);
 
     this.state = {
+      record_title: '',
+      record_text: '',
+      record_tags: [],
       open: false,
       chipData: [
         {key: 0, label: 'Angular'},
@@ -23,7 +26,7 @@ export default class AddBlogRecord extends Component {
         {key: 3, label: 'ReactJS'},
       ],
 
-      value: 1,
+      record_langauge: 1,
       valforchip: '',
 
       options : [
@@ -49,6 +52,7 @@ export default class AddBlogRecord extends Component {
     this.onEnterClick = this.onEnterClick.bind(this);
     this.handleRequestDelete = this.handleRequestDelete.bind(this);
     this.handleNotificationClose = this.handleNotificationClose.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleNotificationClose(event) {
@@ -122,14 +126,17 @@ export default class AddBlogRecord extends Component {
     );
   }
 
-  add_record(){
-    _this = this;
+  handleChange(event){
+    console.log(event.target.value);
+    this.setState({value: event.target.value});
+  }
 
+  add_record(){
     new_record = {
-      title: this.refs.recordTitle.getValue(),
-      text: this.refs.recordText.getValue(),
+      title: this.state.record_title,
+      text: this.state.record_text,
       tags: [],
-      language: this.refs.recordLanguage.props.value,
+      language: this.state.record_langauge,
       createdAt: new Date()
     }
 
@@ -143,13 +150,11 @@ export default class AddBlogRecord extends Component {
     if(BlogRecords.insert(new_record)){
       this.setState({
         open: true,
+        record_title: '',
+        record_text: '',
+        record_tags: [],
+        record_langauge: 1
       });
-
-      this.refs.recordTitle.setState({value: ''})
-      this.refs.recordText.setState({value: ''})
-      this.refs.recordLanguage.props.value = 0;
-      this.state.chipDate = [];
-
     }
   }
 
@@ -170,13 +175,7 @@ export default class AddBlogRecord extends Component {
                 {/* Record title */}
                 <div className="row">
                   <div className="col s12">
-
-                    <TextField
-                      hintText="Заголовок"
-                      ref="recordTitle"
-                    />
-
-
+                    <TextField hintText="Заголовок" onChange={this.handleChange} />
                   </div>
                 </div>
 
@@ -185,7 +184,6 @@ export default class AddBlogRecord extends Component {
                   <div className="col s12">
 
                     <SelectField
-                        value={this.state.value}
                         onChange={this.handleChange}
                         autoWidth={true}
                         floatingLabelText="Язык"
@@ -210,7 +208,7 @@ export default class AddBlogRecord extends Component {
                         multiLine={true}
                         rows={2}
                         rowsMax={4}
-                        ref="recordText"
+                        onChange={this.handleChange}
                     />
 
 
