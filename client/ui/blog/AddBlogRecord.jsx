@@ -4,8 +4,10 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import { findDOMNode } from 'react-dom'
+import Snackbar from 'material-ui/Snackbar';
 
-export const Tasks = new Mongo.Collection('blog_records');
+import {BlogRecords} from '../../../api/site/blog/BlogRecords.js';
+Meteor.subscribe('blog_records');
 
 export default class AddBlogRecord extends Component {
 
@@ -13,6 +15,7 @@ export default class AddBlogRecord extends Component {
     super(props);
 
     this.state = {
+      open: false,
       chipData: [
         {key: 0, label: 'Angular'},
         {key: 1, label: 'JQuery'},
@@ -46,8 +49,15 @@ export default class AddBlogRecord extends Component {
     this.onClickEvt = this.onClickEvt.bind(this);
     this.onEnterClick = this.onEnterClick.bind(this);
     this.handleRequestDelete = this.handleRequestDelete.bind(this);
+    this.handleNotificationClose = this.handleNotificationClose.bind(this);
   }
-  
+
+  handleNotificationClose(event) {
+    this.setState({
+      open: false,
+    });
+  }
+
   addChip(event){
     this.setState({
       valforchip: event.target.value
@@ -114,26 +124,51 @@ export default class AddBlogRecord extends Component {
   }
 
   add_record(){
-    console.log('Add record');
-    [
-      'recordTitle', 'recordTags', 
-      'recordLanguage', 'recordText', 
-      'recordImage', 'recordTags'
-    ].map(record_attr => 
-      console.log(record_attr+' is '+this.refs[record_attr].getValue())
-    );
+    _this = this;
+
+    new_record = {
+      title: this.refs.recordTitle.getValue(),
+      text: this.refs.recordText.getValue(),
+      tags: [],
+      language: this.refs.recordLanguage.props.value,
+      createdAt: new Date()
+    }
+
+    // Save tags
+    this.state.chipData.map(tag => new_record.tags.push(tag['label']))
+
+    // debug
+    console.log(new_record);
+    console.log(this.refs);
+
+    if(BlogRecords.insert(new_record)){
+      this.setState({
+        open: true,
+      });
+
+      this.refs.recordTitle.setState({value: ''})
+      this.refs.recordText.setState({value: ''})
+      this.refs.recordLanguage.props.value = 0;
+      this.state.chipDate = [];
+
+    }
   }
 
   render() {
     return (
         <div className="row">
-
-
+          <Snackbar
+            open={this.state.open}
+            message="Запись в блог добавлена"
+            autoHideDuration={4000}
+            onRequestClose={this.handleNotificationClose}
+          />        
           <div className="col s12 m6">
             <div className="card blue-grey darken-1">
+
               <div className="card-content white-text">
 
-
+                {/* Record title */}
                 <div className="row">
                   <div className="col s12">
 
@@ -146,6 +181,7 @@ export default class AddBlogRecord extends Component {
                   </div>
                 </div>
 
+                {/* Record language */}
                 <div className="row">
                   <div className="col s12">
 
@@ -166,7 +202,7 @@ export default class AddBlogRecord extends Component {
                   </div>
                 </div>
 
-
+                {/* Record text */}
                 <div className="row">
                   <div className="col s12">
 
@@ -182,7 +218,7 @@ export default class AddBlogRecord extends Component {
                   </div>
                 </div>
 
-
+                {/* Record photo */}
                 <div className="row">
                   <div className="col s12">
 
@@ -196,12 +232,10 @@ export default class AddBlogRecord extends Component {
                       </div>
                     </div>
 
-
-
                   </div>
                 </div>
 
-
+                {/* Record tags */}
                 <div className="row">
                   <div className="col s12">
 
@@ -218,20 +252,14 @@ export default class AddBlogRecord extends Component {
                   </div>
                 </div>
 
-
-                
-
-
               </div>
+
               <div className="card-action">
                 <a onClick={this.add_record.bind(this)}>Создать запись</a>
-
               </div>
+
             </div>
           </div>
-
-
-
         </div>
     );
   }
