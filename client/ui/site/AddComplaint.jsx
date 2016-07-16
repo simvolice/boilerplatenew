@@ -3,7 +3,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 
 import {Meteor} from 'meteor/meteor';
 
-import {Card, CardHeader, CardActions, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
@@ -13,6 +13,7 @@ import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import AutoComplete from 'material-ui/AutoComplete';
 
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
 Meteor.subscribe('regions');
@@ -47,6 +48,7 @@ export default class AddComplaint extends Component {
 
       this.state = {
         rulesOpen: false,
+        categoryNames: [],
       };
 
       console.log(Categories.find().fetch());
@@ -62,6 +64,16 @@ export default class AddComplaint extends Component {
     return this.props.regions.map((region) => (
       <MenuItem key={region._id} value={region._id} primaryText={region.name_ru} />,
     ));
+  }
+
+  getCategoryNames() {
+    let categoryNames = [];
+
+    this.props.categories.forEach((category) => {
+      categoryNames.push(category.name_ru);
+    });
+
+    this.setState({categoryNames});
   }
 
   handleATChange(event, index, appealType) {
@@ -109,25 +121,22 @@ export default class AddComplaint extends Component {
           <CardHeader title="Тип обращения и категория вопроса" />
           <CardText className="row">
             <div className="col s6">
-              <SelectField
-                value={this.state.appealType}
-                onChange={this.handleATChange.bind(this)}
+              <AutoComplete
+                hintText="Type anything"
+                dataSource={this.state.categoryNames}
+                onUpdateInput={this.handleUpdateInput}
                 fullWidth={true}
-                floatingLabelText="Выберите тип обращения"
-                style={styles.select}
-              >
-                {this.renderCategories()}
-              </SelectField>
+                openOnFocus={true}
+              />
             </div>
             <div className="col s6">
-              <SelectField
-                value={this.state.questionCategory}
-                onChange={this.handleQCChange.bind(this)}
-                floatingLabelText="Категория вопроса"
+              <AutoComplete
+                hintText="Type anything"
+                dataSource={this.state.categoryNames}
+                onUpdateInput={this.handleUpdateInput}
                 fullWidth={true}
-              >
-                {this.renderCategories()}
-              </SelectField>
+                openOnFocus={true}
+              />
             </div>
           </CardText>
         </Card>
@@ -191,13 +200,11 @@ export default class AddComplaint extends Component {
                   value="central-staff"
                   label="Центральный аппарат"
                   style={styles.radioButton}
-                  fullWidth={true}
                 />
                 <RadioButton
                   value="own-staff"
                   label="Свой регион"
                   style={styles.radioButton}
-                  fullWidth={true}
                 />
               </RadioButtonGroup>
             </CardText>
