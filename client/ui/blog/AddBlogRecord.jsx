@@ -33,7 +33,6 @@ export default class AddBlogRecord extends Component {
         { value: 'one', label: 'One' },
         { value: 'two', label: 'Two' }
       ]
-
     };
 
     this.styles = {
@@ -136,7 +135,7 @@ export default class AddBlogRecord extends Component {
     );
   }
 
-  handleLanguageChange(event, index, value) { this.setState({record_langauge: value}); }  
+  handleLanguageChange(event, index, value) { this.setState({record_langauge: value}); }
 
   handleChange(event){ this.setState({[event.target.getAttribute('data-name')]: event.target.value }); }
 
@@ -220,7 +219,7 @@ export default class AddBlogRecord extends Component {
                         multiLine={true}
                         rows={2}
                         rowsMax={4}
-                        data-name="record_text" 
+                        data-name="record_text"
                         onChange={this.handleChange}
                     />
 

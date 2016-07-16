@@ -3,7 +3,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 
 import {Meteor} from 'meteor/meteor';
 
-import {Card, CardHeader, CardActions, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
@@ -13,6 +13,7 @@ import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import AutoComplete from 'material-ui/AutoComplete';
 
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
 Meteor.subscribe('regions');
@@ -47,15 +48,32 @@ export default class AddComplaint extends Component {
 
       this.state = {
         rulesOpen: false,
+        subCategoryNames: []
       };
-
-      console.log(Categories.find().fetch());
   }
 
-  renderCategories() {
-    return this.props.categories.map((category) => (
-      <MenuItem key={category._id} value={category._id} primaryText={category.name_ru} />,
-    ));
+  getCategoryNames() {
+    return this.props.categories.map((category) => {
+      return {
+        text: category.name_ru,
+        value: category._id
+      }
+    });
+  }
+
+  handleCategoryUpdate(value) {
+    const currentCategory = this.props.categories.filter((category) => {
+      return category._id === value.value;
+    });
+
+    const subCategoryNames = currentCategory[0].sub_category_ru.map((subCategory, index) => {
+      return {
+        text: subCategory,
+        value: index
+      };
+    });
+
+    this.setState({subCategoryNames});
   }
 
   renderRegions() {
@@ -64,13 +82,7 @@ export default class AddComplaint extends Component {
     ));
   }
 
-  handleATChange(event, index, appealType) {
-    this.setState({appealType});
-  }
 
-  handleQCChange(event, index, questionCategory) {
-    this.setState({questionCategory});
-  }
 
   handleRChange(event, index, region) {
     this.setState({region});
@@ -109,25 +121,21 @@ export default class AddComplaint extends Component {
           <CardHeader title="Тип обращения и категория вопроса" />
           <CardText className="row">
             <div className="col s6">
-              <SelectField
-                value={this.state.appealType}
-                onChange={this.handleATChange.bind(this)}
-                fullWidth={true}
-                floatingLabelText="Выберите тип обращения"
-                style={styles.select}
-              >
-                {this.renderCategories()}
-              </SelectField>
+              <AutoComplete
+               floatingLabelText="showAllItems"
+               filter={AutoComplete.caseInsensitiveFilter}
+               openOnFocus={true}
+               dataSource={this.getCategoryNames()}
+               onNewRequest={this.handleCategoryUpdate.bind(this)}
+              />
             </div>
             <div className="col s6">
-              <SelectField
-                value={this.state.questionCategory}
-                onChange={this.handleQCChange.bind(this)}
-                floatingLabelText="Категория вопроса"
-                fullWidth={true}
-              >
-                {this.renderCategories()}
-              </SelectField>
+              <AutoComplete
+                floatingLabelText="showAllItems"
+                filter={AutoComplete.caseInsensitiveFilter}
+                openOnFocus={true}
+                dataSource={this.state.subCategoryNames}
+              />
             </div>
           </CardText>
         </Card>
@@ -191,13 +199,11 @@ export default class AddComplaint extends Component {
                   value="central-staff"
                   label="Центральный аппарат"
                   style={styles.radioButton}
-                  fullWidth={true}
                 />
                 <RadioButton
                   value="own-staff"
                   label="Свой регион"
                   style={styles.radioButton}
-                  fullWidth={true}
                 />
               </RadioButtonGroup>
             </CardText>
