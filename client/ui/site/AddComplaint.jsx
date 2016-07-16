@@ -1,4 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {createContainer} from 'meteor/react-meteor-data';
+
+import {Meteor} from 'meteor/meteor';
 
 import {Card, CardHeader, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
@@ -10,6 +13,12 @@ import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+
+import {Regions} from '../../../api/site/addComplaint/Regions.js';
+Meteor.subscribe('regions');
+
+import {Categories} from '../../../api/site/addComplaint/Categories.js';
+Meteor.subscribe('categories');
 
 const styles = {
   block: {
@@ -26,53 +35,33 @@ const styles = {
   },
   card: {
     height: 350
+  },
+  ruleActionLabelStyle: {
+    fontSize: 15,
   }
 };
 
 export default class AddComplaint extends Component {
   constructor(props) {
       super(props);
+
       this.state = {
         rulesOpen: false,
-        appealType: null,
-        questionCategory: null,
-        region: null,
-        district: null
       };
+
+      console.log(Categories.find().fetch());
   }
 
-  getAppealTypes() {
-    return [
-      <MenuItem key={1} value={1} primaryText="Образование" />,
-      <MenuItem key={2} value={2} primaryText="Агрокультура" />,
-      <MenuItem key={3} value={3} primaryText="Молодежь" />,
-    ];
+  renderCategories() {
+    return this.props.categories.map((category) => (
+      <MenuItem key={category._id} value={category._id} primaryText={category.name_ru} />,
+    ));
   }
 
-  getQuestionCategory() {
-    return [
-      <MenuItem key={1} value={1} primaryText="Детские дошкольные организации" />,
-      <MenuItem key={2} value={2} primaryText="Взрослые послешкольные организации" />,
-      <MenuItem key={3} value={3} primaryText="Школьные организации" />,
-    ];
-  }
-
-  getRegions() {
-    return [
-      <MenuItem key={1} value={1} primaryText="город Астана" />,
-      <MenuItem key={2} value={2} primaryText="город Алматы" />,
-      <MenuItem key={3} value={3} primaryText="Акмолинский областной филиал" />,
-      <MenuItem key={4} value={4} primaryText="Актюбинский областной филиал" />,
-    ];
-  }
-
-  getDistricts() {
-    return [
-      <MenuItem key={1} value={1} primaryText="Аршалинский район" />,
-      <MenuItem key={2} value={2} primaryText="Аккольский район" />,
-      <MenuItem key={3} value={3} primaryText="Есильский район" />,
-      <MenuItem key={4} value={4} primaryText="Темирский район" />,
-    ];
+  renderRegions() {
+    return this.props.regions.map((region) => (
+      <MenuItem key={region._id} value={region._id} primaryText={region.name_ru} />,
+    ));
   }
 
   handleATChange(event, index, appealType) {
@@ -102,14 +91,14 @@ export default class AddComplaint extends Component {
   render() {
     const modalActions = [
       <FlatButton
-        label="Прочитал"
+        label="Закрыть"
         primary={true}
         onTouchTap={this.closeRules.bind(this)}
       />
     ];
 
     return (
-      <div className="container">
+      <div className="row">
         <Card className="row top-buffer">
           <CardTitle
             title="Обещственная приемная"
@@ -127,7 +116,7 @@ export default class AddComplaint extends Component {
                 floatingLabelText="Выберите тип обращения"
                 style={styles.select}
               >
-                {this.getAppealTypes()}
+                {this.renderCategories()}
               </SelectField>
             </div>
             <div className="col s6">
@@ -137,7 +126,7 @@ export default class AddComplaint extends Component {
                 floatingLabelText="Категория вопроса"
                 fullWidth={true}
               >
-                {this.getQuestionCategory()}
+                {this.renderCategories()}
               </SelectField>
             </div>
           </CardText>
@@ -223,7 +212,7 @@ export default class AddComplaint extends Component {
                   fullWidth={true}
                   floatingLabelText="Выберите область"
                 >
-                  {this.getRegions()}
+                  {this.renderRegions()}
                 </SelectField>
               </div>
               <div className="col s12">
@@ -233,7 +222,7 @@ export default class AddComplaint extends Component {
                   fullWidth={true}
                   floatingLabelText="Выберите район"
                 >
-                  {this.getDistricts()}
+                  {this.renderRegions()}
                 </SelectField>
               </div>
             </CardText>
@@ -261,11 +250,13 @@ export default class AddComplaint extends Component {
           </CardText>
         </Card>
         <Card className="row">
-          <CardActions>
-            <FlatButton label="Нажимая кнопку" disabled={true} />
-            <RaisedButton label="подать обращение" primary={true} />,
-            <FlatButton label="вы соглашаетесь с" disabled={true} />
-            <FlatButton label="правилами подачи обращения" onClick={this.openRules.bind(this)} />.
+          <CardText>
+            <p>
+              Нажимая кнопку "подать обращение", вы соглашаетесь с
+              <a href="#" onClick={this.openRules.bind(this)} > правилами
+              подачи обращения</a>.
+            </p>
+            <br/><RaisedButton labelStyle={styles.ruleActionLabelStyle} label="подать обращение" primary={true} />
             <Dialog
               title="Правила подачи обращения"
               subtitle="Уважаемый посетитель!"
@@ -274,12 +265,15 @@ export default class AddComplaint extends Component {
               autoScrollBodyContent={true}
               actions={modalActions}
             >
-              Перед подачей обращения, ознакомьтесь с правилами подачи обращений:
-              Не рассматриваются вопросы:
-              Анонимные, за исключением отдельных случаев
-              Содержащие нецензурные выражения
-              Содержащие нечитаемый текст и непонятные сокращения
-              Премодерация:
+              <br/>Перед подачей обращения, ознакомьтесь с правилами подачи обращений.<br/><br/>
+              <b>Не рассматриваются вопросы:</b>
+              <ul>
+                <li>Анонимные, за исключением отдельных случаев</li>
+                <li>Содержащие нецензурные выражения</li>
+                <li>Содержащие нечитаемый текст и непонятные сокращения</li>
+              </ul>
+              <Divider />
+              <br/><b>Премодерация:</b><br/><br/>
               Обращение будет обработано модератором сайта, а также может быть подвергнуто коррекции согласно нормам этики и правилам
               правописания. Только после этого заявление будет опубликовано, включая, но не ограничиваясь следующими правками:
               Из текста обращения могут быть исключены сведения оскорбительного характера, содержащие клевету, порочащие сведения и иную
@@ -289,14 +283,26 @@ export default class AddComplaint extends Component {
               социального, должностного и имущественного положения, пола, расы, национальности, языка, отношения к религии. Убеждения,
               содержащие призывы к насильственному изменению конституционного строя и нарушению территориальной целостности Республики,
               вызывающие угрозу безопасности, жизни, здоровью, нравственности населения будут удалены.
-              Как правило, модерация обращения и подготовка даже промежуточного ответа на него занимает определенное время. В связи с чем, могут
+              <br/><br/>Как правило, модерация обращения и подготовка даже промежуточного ответа на него занимает определенное время. В связи с чем, могут
               быть не приняты повторные (дублирующие) обращения, либо уточняющие причину не размещения ранее поданных заявлений или статус
               их текущей модерации.
-              Ответ на Ваше обращение будет направлен Вам только в электронном виде.
+              <br/><br/>Ответ на Ваше обращение будет направлен Вам только в электронном виде.
             </Dialog>
-          </CardActions>
+          </CardText>
         </Card>
       </div>
     );
   }
 }
+
+AddComplaint.propTypes = {
+  categories: PropTypes.array.isRequired,
+  regions: PropTypes.array.isRequired
+};
+
+export default createContainer(() => {
+  return {
+    categories: Categories.find({}).fetch(),
+    regions: Regions.find({}).fetch(),
+  }
+}, AddComplaint);
