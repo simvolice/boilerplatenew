@@ -1,8 +1,57 @@
 import React, {Component} from 'react';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import Chip from 'material-ui/Chip';
+import MdInputChips from "react-mdchips";
 
 export const Tasks = new Mongo.Collection('blog_records');
 
 export default class AddBlogRecord extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      chipData: [
+        {key: 0, label: 'Angular'},
+        {key: 1, label: 'JQuery'},
+        {key: 2, label: 'Polymer'},
+        {key: 3, label: 'ReactJS'},
+      ],
+
+      value: 1,
+      valforchip: '',
+
+      options : [
+        { value: 'one', label: 'One' },
+        { value: 'two', label: 'Two' }
+      ]
+
+    };
+
+    this.styles = {
+      chip: {
+        margin: 4
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap'
+      }
+    };
+
+    this.onBlurEvt = this.onBlurEvt.bind(this);
+    this.onEnterEvt = this.onEnterEvt.bind(this);
+  }
+
+
+
+  onBlurEvt(){
+    console.log("onBlurEvt");
+  }
+  onEnterEvt(){
+    console.log("onEnterEvt");
+  }
+
   render() {
     return (
         <div className="row">
