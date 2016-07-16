@@ -30,7 +30,6 @@ export default class AddBlogRecord extends Component {
         { value: 'one', label: 'One' },
         { value: 'two', label: 'Two' }
       ]
-
     };
 
     this.styles = {
@@ -162,7 +161,7 @@ export default class AddBlogRecord extends Component {
             message="Запись в блог добавлена"
             autoHideDuration={4000}
             onRequestClose={this.handleNotificationClose}
-          />        
+          />
           <div className="col s12 m6">
             <div className="card blue-grey darken-1">
 
@@ -172,7 +171,7 @@ export default class AddBlogRecord extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TextField 
+                    <TextField
                       hintText="Заголовок"
                       ref="recordTitle"
                     />

@@ -51,7 +51,16 @@ export default class AddComplaint extends Component {
         categoryNames: [],
       };
 
-      console.log(Categories.find().fetch());
+      let categoryNames = [];
+
+      this.props.categories.forEach((category) => {
+        categoryNames.push({
+          text: category.name_ru,
+          value: category._id
+        });
+      });
+
+      this.setState({categoryNames});
   }
 
   renderCategories() {
@@ -64,16 +73,6 @@ export default class AddComplaint extends Component {
     return this.props.regions.map((region) => (
       <MenuItem key={region._id} value={region._id} primaryText={region.name_ru} />,
     ));
-  }
-
-  getCategoryNames() {
-    let categoryNames = [];
-
-    this.props.categories.forEach((category) => {
-      categoryNames.push(category.name_ru);
-    });
-
-    this.setState({categoryNames});
   }
 
   handleATChange(event, index, appealType) {
@@ -124,7 +123,6 @@ export default class AddComplaint extends Component {
               <AutoComplete
                 hintText="Type anything"
                 dataSource={this.state.categoryNames}
-                onUpdateInput={this.handleUpdateInput}
                 fullWidth={true}
                 openOnFocus={true}
               />
@@ -133,7 +131,6 @@ export default class AddComplaint extends Component {
               <AutoComplete
                 hintText="Type anything"
                 dataSource={this.state.categoryNames}
-                onUpdateInput={this.handleUpdateInput}
                 fullWidth={true}
                 openOnFocus={true}
               />
