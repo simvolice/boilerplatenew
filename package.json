@@ -10,9 +10,9 @@
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-intl": "^2.1.3",
-    "react-mdchips": "^1.0.3",
     "react-router": "^2.5.2",
     "react-select": "^1.0.0-beta13",
-    "react-tap-event-plugin": "^1.0.0"
+    "react-tap-event-plugin": "^1.0.0",
+    "react-tinymce": "^0.5.1"
   }
 }

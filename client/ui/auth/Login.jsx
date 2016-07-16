@@ -12,6 +12,7 @@ export default class Login extends Component {
       password: ''
     }
   }
+  
 
   handleEmailChange(e) {
     this.setState({email: e.target.value});
