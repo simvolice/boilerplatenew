@@ -80,27 +80,13 @@ export default class AddNews extends Component {
 
 
     }
-
-
-
-
-
   }
 
   addChip(event){
-
-
     this.setState({
       valforchip: event.target.value
     });
-
-
-
-
   }
-
-
-
 
   handleChange(event, index, value) {
     console.log('handleChange :'+value)
@@ -115,9 +101,9 @@ export default class AddNews extends Component {
       return chip.key;
     }
 
-     function chipe(chip) {
-       return chip.key;
-     }
+    function chipe(chip) {
+      return chip.key;
+    }
 
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
