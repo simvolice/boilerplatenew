@@ -4,10 +4,12 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import MdInputChips from "react-mdchips";
+import { findDOMNode } from 'react-dom'
 
 export const Tasks = new Mongo.Collection('blog_records');
 
 export default class AddBlogRecord extends Component {
+
   constructor(props) {
     super(props);
 
@@ -41,15 +43,30 @@ export default class AddBlogRecord extends Component {
 
     this.onBlurEvt = this.onBlurEvt.bind(this);
     this.onEnterEvt = this.onEnterEvt.bind(this);
+    this.onClickEvt = this.onClickEvt.bind(this);
   }
 
-
+  onClickEvt(){
+    console.log('Add new blog record');
+  }
 
   onBlurEvt(){
     console.log("onBlurEvt");
   }
+
   onEnterEvt(){
     console.log("onEnterEvt");
+  }
+
+  add_record(){
+    console.log('Add record');
+    [
+      'recordTitle', 'recordTags', 
+      'recordLanguage', 'recordText', 
+      'recordImage', 'recordTags'
+    ].map(record_attr => 
+      console.log(record_attr+' is '+this.refs[record_attr].getValue())
+    );
   }
 
   render() {
@@ -65,7 +82,10 @@ export default class AddBlogRecord extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TextField hintText="Заголовок"/>
+                    <TextField 
+                      hintText="Заголовок"
+                      ref="recordTitle"
+                    />
 
 
                   </div>
@@ -79,6 +99,7 @@ export default class AddBlogRecord extends Component {
                         onChange={this.handleChange}
                         autoWidth={true}
                         floatingLabelText="Язык"
+                        ref="recordLanguage"
                     >
                       <MenuItem value={1} primaryText="Русский язык" />
                       <MenuItem value={2} primaryText="Казахский язык" />
@@ -99,6 +120,7 @@ export default class AddBlogRecord extends Component {
                         multiLine={true}
                         rows={2}
                         rowsMax={4}
+                        ref="recordText"
                     />
 
 
@@ -112,7 +134,7 @@ export default class AddBlogRecord extends Component {
                     <div className="file-field input-field">
                       <div className="btn">
                         <span>Выбери фотографию</span>
-                        <input type="file" />
+                        <input type="file" ref="recordImage"/>
                       </div>
                       <div className="file-path-wrapper">
                         <input className="file-path validate" type="text" />
@@ -136,6 +158,7 @@ export default class AddBlogRecord extends Component {
                         max="10"
                         onBlur={this.onBlurEvt.bind(this)}
                         onEnter={this.onEnterEvt.bind(this)}
+                        ref="recordTags"
                     />
 
 
@@ -149,7 +172,7 @@ export default class AddBlogRecord extends Component {
 
               </div>
               <div className="card-action">
-                <a href="#">Создать запись</a>
+                <a onClick={this.add_record.bind(this)}>Создать запись</a>
 
               </div>
             </div>
