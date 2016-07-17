@@ -35,7 +35,7 @@ const styles = {
     marginBottom: 16
   },
   card: {
-    height: 350
+    height: 280
   },
   ruleActionLabelStyle: {
     fontSize: 15,
@@ -47,8 +47,18 @@ export default class AddComplaint extends Component {
       super(props);
 
       this.state = {
+      caseCheckboxValue: false,
         rulesOpen: false,
-        subCategoryNames: []
+        subCategoryNames: [],
+        districtNames: [],
+        caseCardStyle: {
+          height: 300,
+          display: 'none'
+        },
+        anotherRegionCardStyle: {
+          height: 300,
+          display: 'none'
+        }
       };
   }
 
@@ -76,20 +86,28 @@ export default class AddComplaint extends Component {
     this.setState({subCategoryNames});
   }
 
-  renderRegions() {
-    return this.props.regions.map((region) => (
-      <MenuItem key={region._id} value={region._id} primaryText={region.name_ru} />,
-    ));
+  getRegionNames() {
+    return this.props.regions.map((region) => {
+      return {
+        text: region.name_ru,
+        value: region._id
+      }
+    });
   }
 
+  handleRegionUpdate(value) {
+    const currentRegion = this.props.regions.filter((region) => {
+      return region._id === value.value;
+    });
 
+    const districtNames = currentRegion[0].districts_ru.map((district, index) => {
+      return {
+        text: district,
+        value: index
+      };
+    });
 
-  handleRChange(event, index, region) {
-    this.setState({region});
-  }
-
-  handleDChange(event, index, district) {
-    this.setState({district});
+    this.setState({districtNames});
   }
 
   openRules() {
@@ -100,13 +118,50 @@ export default class AddComplaint extends Component {
     this.setState({rulesOpen: false});
   }
 
+  handleCaseCheckboxChange(event, isInputChecked) {
+    if(isInputChecked) {
+      const caseCardStyle = {
+        display: '',
+        height: 300,
+      };
+      this.setState({ caseCardStyle });
+    }
+    else {
+      const caseCardStyle = {
+        display: 'none',
+        height: 300,
+      };
+      this.setState({ caseCardStyle });
+    }
+
+    this.setState({caseCheckboxValue: isInputChecked});
+  }
+
+  handleAppealReceiverRadio(event, value) {
+    if(value === 'another-staff') {
+      let anotherRegionCardStyle = {
+        height: 300,
+        display: ''
+      }
+
+      this.setState({anotherRegionCardStyle});
+    }
+    else {
+      let anotherRegionCardStyle = {
+        height: 300,
+        display: 'none'
+      }
+
+      this.setState({anotherRegionCardStyle});
+    }
+  }
+
   render() {
     const modalActions = [
       <FlatButton
         label="Закрыть"
         primary={true}
-        onTouchTap={this.closeRules.bind(this)}
-      />
+        onTouchTap={this.closeRules.bind(this)}/>
     ];
 
     return (
@@ -120,27 +175,29 @@ export default class AddComplaint extends Component {
         <Card className="row">
           <CardHeader title="Тип обращения и категория вопроса" />
           <CardText className="row">
-            <div className="col s6">
+            <div className="col s12">
               <AutoComplete
-               floatingLabelText="showAllItems"
+               floatingLabelText="Выберите категорию"
                filter={AutoComplete.caseInsensitiveFilter}
                openOnFocus={true}
                dataSource={this.getCategoryNames()}
                onNewRequest={this.handleCategoryUpdate.bind(this)}
+               fullWidth={true}
               />
             </div>
-            <div className="col s6">
+            <div className="col s12">
               <AutoComplete
-                floatingLabelText="showAllItems"
+                floatingLabelText="Выберите под-категорию"
                 filter={AutoComplete.caseInsensitiveFilter}
                 openOnFocus={true}
                 dataSource={this.state.subCategoryNames}
+                fullWidth={true}
               />
             </div>
           </CardText>
         </Card>
         <div className="row">
-          <Card className="col s6" style={styles.card}>
+          <Card className='col s12' style={styles.card}>
             <CardHeader title="Обращение" />
             <CardText>
                 <RadioButtonGroup name="appealTime" defaultSelected="first-time" className="col s6">
@@ -160,11 +217,13 @@ export default class AddComplaint extends Component {
                 <Checkbox
                   label="Несогласие с решением суда"
                   style={styles.checkbox}
+                  onCheck={this.handleCaseCheckboxChange.bind(this)}
+                  checked={this.state.caseCheckboxValue}
                   className="col s6"
                 />
             </CardText>
           </Card>
-          <Card className="col s6" style={styles.card}>
+          <Card className="col s12" style={this.state.caseCardStyle}>
             <CardHeader title="Категория" />
             <CardText>
                 <RadioButtonGroup name="appealTime" defaultSelected="first-time" className="col s6">
@@ -191,45 +250,49 @@ export default class AddComplaint extends Component {
           </Card>
         </div>
         <div className="row">
-          <Card className="col s6" style={styles.card}>
+          <Card className="col s12" style={styles.card}>
             <CardHeader title="Куда подать обращение" />
             <CardText>
-              <RadioButtonGroup name="appealTime" className="col s12">
+              <RadioButtonGroup
+                name="appealTime"
+                className="col s12"
+                onChange={this.handleAppealReceiverRadio.bind(this)} >
                 <RadioButton
                   value="central-staff"
                   label="Центральный аппарат"
-                  style={styles.radioButton}
-                />
+                  style={styles.radioButton} />
                 <RadioButton
                   value="own-staff"
                   label="Свой регион"
-                  style={styles.radioButton}
-                />
+                  style={styles.radioButton} />
+                <RadioButton
+                  value="another-staff"
+                  label="Другой регион"
+                  style={styles.radioButton} />
               </RadioButtonGroup>
             </CardText>
           </Card>
-          <Card className="col s6" style={styles.card}>
+          <Card className="col s12"  style={this.state.anotherRegionCardStyle}>
             <CardHeader title="Другой регион" />
             <CardText>
               <div className="col s12">
-                <SelectField
-                  value={this.state.region}
-                  onChange={this.handleRChange.bind(this)}
-                  fullWidth={true}
-                  floatingLabelText="Выберите область"
-                >
-                  {this.renderRegions()}
-                </SelectField>
+                <AutoComplete
+                 floatingLabelText="Выберите регион"
+                 filter={AutoComplete.caseInsensitiveFilter}
+                 openOnFocus={true}
+                 dataSource={this.getRegionNames()}
+                 onNewRequest={this.handleRegionUpdate.bind(this)}
+                 fullWidth={true}
+                />
               </div>
               <div className="col s12">
-                <SelectField
-                  value={this.state.district}
-                  onChange={this.handleDChange.bind(this)}
-                  fullWidth={true}
+                <AutoComplete
                   floatingLabelText="Выберите район"
-                >
-                  {this.renderRegions()}
-                </SelectField>
+                  filter={AutoComplete.caseInsensitiveFilter}
+                  openOnFocus={true}
+                  dataSource={this.state.districtNames}
+                  fullWidth={true}
+                />
               </div>
             </CardText>
           </Card>
