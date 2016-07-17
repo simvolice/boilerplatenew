@@ -47,7 +47,7 @@ export default class AddComplaint extends Component {
       super(props);
 
       this.state = {
-      caseCheckboxValue: false,
+        caseCheckboxValue: false,
         rulesOpen: false,
         subCategoryNames: [],
         districtNames: [],

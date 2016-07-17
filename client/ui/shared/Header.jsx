@@ -27,9 +27,13 @@ export default class Header extends Component {
             <li><a href="/addcomplaint">Добавить жалобу</a></li>
           </ul>
 
+          <ul id="registration_dropdown" className="dropdown-content">
+            <li><a href="/registration">Регистрация</a></li>
+          </ul>
+
           <ul id="blogs_dropdown" className="dropdown-content">
             <li><a href="/addblogrecord">Добавить в блог</a></li>
-          </ul>          
+          </ul>
 
           <nav>
             <div className="nav-wrapper">

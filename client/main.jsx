@@ -3,6 +3,7 @@ import App from './ui/App.jsx';
 import AddNews from './ui/news/AddNews.jsx';
 import AddBlogRecord from './ui/blog/AddBlogRecord.jsx';
 import AddComplaint from './ui/site/AddComplaint.jsx';
+import Registration from './ui/site/Registration.jsx';
 
 import ListNews from './ui/news/ListNews.jsx';
 
@@ -50,6 +51,7 @@ Meteor.startup(function() {
                     <Route path="/listnews" component={ListNews} />
                     <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
                     <Route path="/addcomplaint" component={AddComplaint}/>
+                    <Route path="/registration" component={Registration}/>
                   </Route>
 
               </Router>
