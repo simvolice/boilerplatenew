@@ -24,26 +24,3 @@ export default class Logout extends Component {
    )
   }
 }
-
-class LogoutButton extends Component {
-
-  constructor(props)  {
-    super(props)
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    if(Meteor.userId()){ Meteor.logout(function(err){ browserHistory.push('/') }) }
-  }
-
-  render(){
-    if(Meteor.userId()){
-      return(
-        <a href='' className="button" onClick={this.handleClick}>Выход</a>
-        )
-    } else  {
-      return null
-    }
-  }
-}

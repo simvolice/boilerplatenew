@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { browserHistory } from 'react-router'
-import LogoutButton from '../auth/Logout.jsx';
+import LogoutButton from '../auth/LogoutButton.jsx';
 
 export default class Header extends Component {
   componentDidMount(){ $(".dropdown-button").dropdown() }
