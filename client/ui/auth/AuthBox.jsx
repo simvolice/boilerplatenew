@@ -10,7 +10,7 @@ export default class AuthBox extends Component {
   render() {
     if(Meteor.userId()){
       return(
-        <h1>Hello, {Meteor.userId()}</h1>
+        null
       );
     } else {
       return(

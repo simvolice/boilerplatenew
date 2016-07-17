@@ -8,18 +8,10 @@ import {Meteor} from 'meteor/meteor';
 
 Meteor.subscribe('news_records');
 
-
 export default class ListNews extends Component {
-
   constructor(props){
     super(props);
   }
-
-  // componentWillMount(){
-  //   console.log();
-  //   this.setState({news: NewsRecords.find({})});
-  //   console.log(this.state.news);
-  // }
 
   render_news(){
     return(

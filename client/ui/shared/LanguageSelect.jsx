@@ -5,17 +5,11 @@ import MenuItem from 'material-ui/MenuItem';
 export default class LanguageSelect extends Component {
   constructor(props) {
     super(props);
-    
-    console.log('LanguageSelect props');
-    console.log(props);
-
     this.state = {
       language: 1
     }
 
-
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
-
   }
 
   handleLanguageChange(event, index, value) { 

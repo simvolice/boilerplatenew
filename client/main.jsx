@@ -29,7 +29,10 @@ function requireAuth(nextState, replace) {
 }
 
 Meteor.startup(function() {
-
+    
+    UPLOADCARE_PUBLIC_KEY = 'f2ffd038e7774979768e';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_LOCALE = 'ru';
   addLocaleData(enLocaleData);
   addLocaleData(ruLocaleData);
   addLocaleData(kkLocaleData);
