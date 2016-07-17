@@ -15,16 +15,32 @@ import Snackbar from 'material-ui/Snackbar';
 
 export default class AddNews extends Component {
 
+
+  componentDidMount(){
+
+   var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+    widget.onUploadComplete(function(fileInfo) {
+
+      this.setState({urlImage: fileInfo.originalUrl});
+
+    }.bind(this));
+
+
+  }
+
+
+
+
   constructor(props) {
     super(props);
 
     this.state = {
+      regionValue: 'Выберите регион',
+      urlImage: '',
       open: false,
       chipData: [
-        {key: 0, label: 'Angular'},
-        {key: 1, label: 'JQuery'},
-        {key: 2, label: 'Polymer'},
-        {key: 3, label: 'ReactJS'},
+
       ],
 
       language: 1,
@@ -56,14 +72,23 @@ export default class AddNews extends Component {
     this.handleNotificationClose = this.handleNotificationClose.bind(this);
     this.handleDynamicChange = this.handleDynamicChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.regionChange = this.regionChange.bind(this);
   }
 
   handleEditorChange(e) { this.setState({text: e.target.getContent() });}
 
-  handleNotificationClose(event) { this.setState({open: false}); }  
+  handleNotificationClose(event) { this.setState({open: false}); }
+
+  regionChange(val){
+
+
+
+    this.setState({regionValue: val});
+
+  }
+
 
   onEnterClick(event){
-    //TODO потом надо доделать проверку на пустой стринг
 
     if (!/\s/g.test(event.target.value)){
       if (event.keyCode === 13) {
@@ -125,9 +150,11 @@ export default class AddNews extends Component {
       title: this.state.title,
       text: this.state.text,
       tags: [],
+      urlImage: this.state.urlImage,
       language: this.state.language,
-      createdAt: new Date()
-    }
+      createdAt: new Date(),
+      region: this.state.regionValue
+    };
 
     // Save tags
     this.state.chipData.map(tag => new_record.tags.push(tag['label']))
@@ -175,7 +202,7 @@ export default class AddNews extends Component {
                   <div className="col s12">
 
                     <TinyMCE
-                        content="<p>This is the initial content of the editor</p>"
+                        content="<p>Начните писать текст здесь...</p>"
                         config={{
                           plugins: 'code',
                           toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
@@ -189,15 +216,10 @@ export default class AddNews extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <div className="file-field input-field">
-                      <div className="btn">
-                        <span>Выбери фотографию</span>
-                        <input type="file" />
-                      </div>
-                      <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text" />
-                      </div>
-                    </div>
+                    <input type="hidden" name="picture" role="uploadcare-uploader" />
+
+
+
                   </div>
                 </div>
 
@@ -221,7 +243,7 @@ export default class AddNews extends Component {
 
                 <div className="row">
                   <div className="col s12">
-                    <Select name="form-field-name" value="one" options={this.state.options}/>
+                    <Select value={this.state.regionValue} name="form-field-name" options={this.state.options} onChange={this.regionChange}/>
                   </div>
                 </div>
 
