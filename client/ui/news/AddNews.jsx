@@ -19,6 +19,7 @@ export default class AddNews extends Component {
     super(props);
 
     this.state = {
+      open: false,
       chipData: [
         {key: 0, label: 'Angular'},
         {key: 1, label: 'JQuery'},

@@ -25,8 +25,7 @@ export default class Logout extends Component {
   }
 }
 
-
-export default class LogoutButton extends Component {
+class LogoutButton extends Component {
 
   constructor(props)  {
     super(props)
@@ -35,11 +34,7 @@ export default class LogoutButton extends Component {
   }
 
   handleClick() {
-    if(!Meteor.userId())
-      return false
-    Meteor.logout(function(err){
-      browserHistory.push('/');
-    });
+    if(Meteor.userId()){ Meteor.logout(function(err){ browserHistory.push('/') }) }
   }
 
   render(){
