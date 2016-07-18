@@ -46,7 +46,6 @@ modules@0.6.5
 modules-runtime@0.6.5
 mongo@1.1.9_1
 mongo-id@1.0.5
-mrt:modernizr-meteor@2.6.2
 npm-bcrypt@0.8.6_2
 npm-mongo@1.4.45
 observe-sequence@1.0.12
@@ -59,7 +58,6 @@ react-meteor-data@0.2.9
 reactive-var@1.0.10
 reload@1.1.10
 retry@1.0.8
-richsilv:owl-carousel@0.1.0
 routepolicy@1.0.11
 service-configuration@1.0.10
 sha@1.0.8
