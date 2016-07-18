@@ -12,15 +12,23 @@ export default class App extends Component {
       <div>
 
 
-       <Header />
+
+          <Header />
+
 
 
         <div className="container">
-          <AuthBox />
-          {this.props.children}
+
+                <AuthBox />
+                {this.props.children}
+
+
+
         </div>
 
-          <Footer />
+              <Footer />
+ 
+
 
       </div>
     );

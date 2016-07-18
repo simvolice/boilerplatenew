@@ -3,13 +3,14 @@ import {createContainer} from 'meteor/react-meteor-data';
 import {Meteor} from 'meteor/meteor';
 
 import React, {Component, PropTypes} from 'react';
-
-
+import moment from 'moment/min/moment-with-locales.min';
+moment.locale('ru');
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
-
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import TinyMCE from 'react-tinymce';
@@ -178,7 +179,7 @@ export default class AddNews extends Component {
       tags: [],
       urlImage: this.state.urlImage,
       language: this.state.language,
-      createdAt: new Date(),
+      createdAt: moment().format('LLLL'),
       region: this.state.regionValue
     };
 
@@ -205,8 +206,12 @@ export default class AddNews extends Component {
           />
 
           <div className="col s12">
-            <div className="card white darken-1">
-              <div className="card-content white-text">
+
+            <Card>
+
+              <CardTitle title="Добавь новость"/>
+              <CardText>
+
 
                 {/* News title */}
                 <div className="row">
@@ -228,7 +233,7 @@ export default class AddNews extends Component {
                   <div className="col s12">
 
                     <TinyMCE
-                        content="<p>Начните писать текст здесь...</p>"
+                        content="<p>Начни писать текст новости здесь...</p>"
                         config={{
                           plugins: 'code',
                           toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
@@ -256,28 +261,30 @@ export default class AddNews extends Component {
                     <div className="divider"></div>
 
                     <TextField hintText="Добавь теги" id="text-field-controlled" value={this.state.valforchip}
-                        onChange={this.addChip} onKeyDown={this.onEnterClick}
+                               onChange={this.addChip} onKeyDown={this.onEnterClick}
                     />
 
                   </div>
                 </div>
 
 
-                
+
                 <div className="row">
                   <div className="col s12">
-                    <Select value={this.state.regionValue} name="form-field-name" options={this.getRegionNames()} onChange={this.regionChange}/>
+                    <Select multi={true} placeholder="Выбери регион" value={this.state.regionValue} name="form-field-name" options={this.getRegionNames()} onChange={this.regionChange}/>
                   </div>
                 </div>
 
 
-              </div>
 
-              <div className="card-action">
-                <a onClick={this.add_news_record}>Сохранить новость</a>
-              </div>
+              </CardText>
+              <CardActions>
+                <FlatButton onClick={this.add_news_record} label="Сохранить" />
 
-            </div>
+              </CardActions>
+            </Card>
+
+
           </div>
 
 

@@ -14,12 +14,10 @@ export default class AuthBox extends Component {
       );
     } else {
       return(
-        <div className="col s3 m3">
-          <div className="card">
-            <div className="card-content white-text">
+        <div className="col center">
+
               <Login />
-            </div>
-          </div>          
+
         </div>
       );
     }    

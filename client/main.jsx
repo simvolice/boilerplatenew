@@ -34,9 +34,11 @@ Meteor.startup(function() {
     UPLOADCARE_PUBLIC_KEY = 'f2ffd038e7774979768e';
     UPLOADCARE_IMAGES_ONLY = true;
     UPLOADCARE_LOCALE = 'ru';
+    UPLOADCARE_PREVIEW_STEP = true;
+    UPLOADCARE_CLEARABLE = true;
 
 
-  addLocaleData(enLocaleData);
+    addLocaleData(enLocaleData);
   addLocaleData(ruLocaleData);
   addLocaleData(kkLocaleData);
 

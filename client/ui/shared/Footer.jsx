@@ -7,7 +7,7 @@ export default class Footer extends Component {
 
             <div className="footer-copyright">
               <div className="container">
-                Made by <a className="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+                <a className="orange-text text-lighten-3" href="http://growit.kz" target="_blank">GROWIT © 2016</a>
               </div>
 
           </div>

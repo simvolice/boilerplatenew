@@ -3,7 +3,21 @@ import { browserHistory } from 'react-router'
 import LogoutButton from '../auth/LogoutButton.jsx';
 
 export default class Header extends Component {
-    logout(){
+
+
+    constructor(props) {
+        super(props);
+
+        this.styles = {
+            header: {
+                marginBottom: 20
+            }
+        };
+
+    }
+
+
+        logout(){
       Meteor.logout(function(err){
         browserHistory.go('/');
       });
@@ -11,12 +25,13 @@ export default class Header extends Component {
 
     componentDidMount(){
       $(".dropdown-button").dropdown();
+        $(".button-collapse").sideNav();
     }
 
   render() {
     return (
 
-        <div>
+        <div style={this.styles.header}>
           {/* Dropdown Structure */}
           <ul id="news_dropdown" className="dropdown-content">
             <li><a href="/addnews">Добавить новость</a></li>
@@ -32,7 +47,7 @@ export default class Header extends Component {
 
           <nav>
             <div className="nav-wrapper">
-              <a href="#!" className="brand-logo">CMS</a>
+              <a href="#!" className="brand-logo">Управление сайтом НУРОТАН</a>
               <ul className="right hide-on-med-and-down">
 
                 {/* Dropdown Trigger */}
@@ -45,7 +60,9 @@ export default class Header extends Component {
               </ul>
 
               <ul id="nav-mobile" className="side-nav">
-                <li><a href="#">Navbar Link</a></li>
+                  <li><a href="/addblogrecord">Добавить запись в блог</a></li>
+                  <li><a href="/addcomplaint">Добавить жалобу</a></li>
+                  <li><a href="/addnews">Добавить новость</a></li>
               </ul>
               <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
 

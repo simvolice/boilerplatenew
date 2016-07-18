@@ -7,6 +7,11 @@ import { findDOMNode } from 'react-dom'
 import Snackbar from 'material-ui/Snackbar';
 import LanguageSelect from '../shared/LanguageSelect.jsx';
 import {BlogRecords} from '../../../api/site/blog/BlogRecords.js';
+import TinyMCE from 'react-tinymce';
+
+import moment from 'moment/min/moment-with-locales.min';
+moment.locale('ru');
+
 
 Meteor.subscribe('blog_records');
 
@@ -25,12 +30,7 @@ export default class AddBlogRecord extends Component {
       ],
 
       language: 1,
-      valforchip: '',
-
-      options : [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two' }
-      ]
+      valforchip: ''
     };
 
     this.styles = {
@@ -53,6 +53,7 @@ export default class AddBlogRecord extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.handleDynamicChange = this.handleDynamicChange.bind(this);
+    this.handleEditorChange = this.handleEditorChange.bind(this);
   }
 
   handleNotificationClose(event) { this.setState({open: false}); }
@@ -70,6 +71,7 @@ export default class AddBlogRecord extends Component {
   onBlurEvt(){ console.log("onBlurEvt"); }
 
 
+  handleEditorChange(e) { this.setState({text: e.target.getContent() });}
   onEnterClick(event){
     //TODO потом надо доделать проверку на пустой стринг
 
@@ -134,7 +136,7 @@ export default class AddBlogRecord extends Component {
       urlImage: this.state.urlImage,
       tags: [],
       language: this.state.language,
-      createdAt: new Date()
+      createdAt: moment().format('LLLL')
     }
 
     // Save tags
@@ -182,15 +184,14 @@ export default class AddBlogRecord extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TextField
-                        hintText="Текст"
-                        multiLine={true}
-                        rows={2}
-                        rowsMax={4}
-                        data-name="text"
-                        onChange={this.handleDynamicChange}
+                    <TinyMCE
+                        content="<p>Начни писать текст записи здесь...</p>"
+                        config={{
+                          plugins: 'code',
+                          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                        }}
+                        onChange={this.handleEditorChange}
                     />
-
                   </div>
                 </div>
 
