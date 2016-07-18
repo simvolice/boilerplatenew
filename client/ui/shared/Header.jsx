@@ -7,52 +7,74 @@ export default class Header extends Component {
 
   render() {
     return (
-
-        <div>
-          {/* Dropdown Structure */}
-          <ul id="news_dropdown" className="dropdown-content">
-            <li><a href="/listnews">Новости</a></li>
-            <li><a href="/addnews">Добавить новость</a></li>
-          </ul>
-
-          <ul id="complaints_dropdown" className="dropdown-content">
-            <li><a href="/addcomplaint">Добавить жалобу</a></li>
-          </ul>
-
-          <ul id="registration_dropdown" className="dropdown-content">
-            <li><a href="/registration">Регистрация</a></li>
-          </ul>
-
-          <ul id="blogs_dropdown" className="dropdown-content">
-            <li><a href="/addblogrecord">Добавить в блог</a></li>
-          </ul>
-
-          <nav>
-            <div className="nav-wrapper">
-              <a href="#!" className="brand-logo">Logo</a>
-              <ul className="right hide-on-med-and-down">
-
-                {/* Dropdown Trigger */}
-                <li><a className="dropdown-button" href="#!" data-activates="complaints_dropdown">Работа с жалобами<i className="material-icons right">arrow_drop_down</i></a></li>
-                <li><a className="dropdown-button" href="#!" data-activates="news_dropdown">Работа с новостями<i className="material-icons right">arrow_drop_down</i></a></li>
-                <li><a className="dropdown-button" href="#!" data-activates="blogs_dropdown">Блог<i className="material-icons right">arrow_drop_down</i></a></li>
-                <li>
-                  <LogoutButton className="button" />
-                </li>
-              </ul>
-
-              <ul id="nav-mobile" className="side-nav">
-                <li><a href="#">Navbar Link</a></li>
-              </ul>
-              <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
-
-            </div>
-          </nav>
+      <header>
+        <div id="logo" className="cell-2">
+          <img src="img/logo.png" alt="Нур отан логотип" />
         </div>
-
-
-
-
+        <div className="on-menu cell-10">
+          <div className="left-on-menu">
+            <div className="block-top-right">
+              <span className="date">
+                <strong><i>11 июля, 2016</i></strong>
+              </span>
+              <span className="language">
+                <i>KZ</i>
+                <i className="active">RU</i>
+                <i>EN</i>
+              </span>
+              <span className="tel">
+                <img src="img/icons/tel.png" alt="telephone" />
+              </span>
+              <span>
+                <img src="img/icons/glasses.png" alt="glasses" />
+              </span>
+            </div>
+          </div>
+          <div className="right-on-menu">
+            <div className="block-top-right right">
+              <input type="text" placeholder="Я ищу..." className="search" />
+              <span className="social">
+                <a href="#twitter" className="twitter" />
+                <a href="#facebook" className="facebook" />
+                <a href="#google-plus" className="google-plus" />
+                <a href="#youtube" className="youtube" />
+                <a href="#rss" className="rss" />
+              </span>
+              <span className="login">
+                <span>
+                  <a href="#sign">
+                    <img src="img/icons/login.png" alt="Войти" />
+                    <i>Войти</i>
+                  </a>
+                </span>
+                <span><a href="/registration"><i>Регистрация</i></a></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="menu cell-10">
+          <ul className="big-menu">
+            <li><a href="#" className="active">Главная</a></li>
+            <li><a href="#">Партия</a></li>
+            <li><a href="#">Фракция</a></li>
+            <li><a href="#">Новости</a></li>
+            <li><a href="#">Программные документы</a></li>
+            <li><a href="#">Регионы</a></li>
+            <li><a href="#">Общественная приемная</a></li>
+            <li className="last"><a href="#"><span>Еще</span> <img src="img/icons/burger.png" alt="burger" /></a></li>
+            <li className="burger"><a href="#"><img src="img/icons/burger.png" alt="burger" /></a></li>
+          </ul>
+          <ul className="small-menu">
+            <li><a href="#" className="active">Главная</a></li>
+            <li><a href="#">Партия</a></li>
+            <li><a href="#">Фракция</a></li>
+            <li><a href="#">Новости</a></li>
+            <li><a href="#">Программные документы</a></li>
+            <li><a href="#">Регионы</a></li>
+            <li><a href="#">Общественная приемная</a></li>
+          </ul>
+        </div>
+      </header>
     );
   }
 }

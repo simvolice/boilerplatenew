@@ -1,3 +1,9 @@
+@import url('css/main.css');
+@import url('css/normalize.css');
+@import url('css/owl.carousel.css');
+@import url('css/style.css');
+
+
 .icon-block {
   padding: 0 15px;
 }
