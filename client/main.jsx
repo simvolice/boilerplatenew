@@ -51,7 +51,7 @@ Meteor.startup(function() {
           <IntlProvider locale="ru">
               <Router history={browserHistory}>
                   <Route path="/" component={App}>
-                    <Route path="/home" component={Home} />
+                    <Route path="/home" component={Home}/>
                     <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
                     <Route path="/listnews" component={ListNews} />
                     <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
