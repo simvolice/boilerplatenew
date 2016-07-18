@@ -16,15 +16,12 @@ export default class AddBlogRecord extends Component {
     super(props);
 
     this.state = {
-      record_title: '',
-      record_text: '',
-      record_tags: [],
+      urlImage: '',
+      title: '',
+      text: '',
+      tags: [],
       open: false,
       chipData: [
-        {key: 0, label: 'Angular'},
-        {key: 1, label: 'JQuery'},
-        {key: 2, label: 'Polymer'},
-        {key: 3, label: 'ReactJS'},
       ],
 
       language: 1,
@@ -55,6 +52,7 @@ export default class AddBlogRecord extends Component {
     this.handleNotificationClose = this.handleNotificationClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    this.handleDynamicChange = this.handleDynamicChange.bind(this);
   }
 
   handleNotificationClose(event) { this.setState({open: false}); }
@@ -119,11 +117,21 @@ export default class AddBlogRecord extends Component {
     );
   }
 
+  componentDidMount(){
+    var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+    widget.onUploadComplete(function(fileInfo) {
+      this.setState({urlImage: fileInfo.originalUrl});
+    }.bind(this));
+  }
+
+  handleDynamicChange(event){ this.setState({[event.target.getAttribute('data-name')]: event.target.value }); }
 
   add_record(){
     new_record = {
       title: this.state.title,
       text: this.state.text,
+      urlImage: this.state.urlImage,
       tags: [],
       language: this.state.language,
       createdAt: new Date()
@@ -134,10 +142,8 @@ export default class AddBlogRecord extends Component {
 
     // debug
     console.log(new_record);
-    console.log(this.refs);
 
     if(BlogRecords.insert(new_record)){
-      console.log(this.state);
       this.setState({open: true});
     }
   }
@@ -145,6 +151,7 @@ export default class AddBlogRecord extends Component {
   render() {
     return (
         <div className="row">
+          
           {/* Notification */}
           <Snackbar
             open={this.state.open}
@@ -160,9 +167,7 @@ export default class AddBlogRecord extends Component {
                 {/* Record title */}
                 <div className="row">
                   <div className="col s12">
-
-                    <TextField hintText="Заголовок" data-name="title" onChange={this.handleChange} />
-
+                    <TextField hintText="Заголовок" data-name="title" onChange={this.handleDynamicChange} />
                   </div>
                 </div>
 
@@ -183,7 +188,7 @@ export default class AddBlogRecord extends Component {
                         rows={2}
                         rowsMax={4}
                         data-name="text"
-                        onChange={this.handleChange}
+                        onChange={this.handleDynamicChange}
                     />
 
                   </div>
@@ -192,18 +197,7 @@ export default class AddBlogRecord extends Component {
                 {/* Record photo */}
                 <div className="row">
                   <div className="col s12">
-
-                    <div className="file-field input-field">
-                      <div className="btn">
-                        <span>Выбери фотографию</span>
-                        <input type="file" ref="recordImage"/>
-                      </div>
-
-                      <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text" />
-                      </div>
-                    </div>
-
+                    <input type="hidden" name="picture" role="uploadcare-uploader" />
                   </div>
                 </div>
 

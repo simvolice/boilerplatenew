@@ -241,11 +241,7 @@ export default class AddNews extends Component {
                 {/* News photo */}
                 <div className="row">
                   <div className="col s12">
-
                     <input type="hidden" name="picture" role="uploadcare-uploader" />
-
-
-
                   </div>
                 </div>
 
