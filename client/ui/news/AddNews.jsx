@@ -1,4 +1,8 @@
-import React, {Component} from 'react';
+import {createContainer} from 'meteor/react-meteor-data';
+
+import {Meteor} from 'meteor/meteor';
+
+import React, {Component, PropTypes} from 'react';
 
 
 import TextField from 'material-ui/TextField';
@@ -12,13 +16,19 @@ import TinyMCE from 'react-tinymce';
 import LanguageSelect from '../shared/LanguageSelect.jsx';
 import {NewsRecords} from '../../../api/site/news/NewsRecords.js';
 import Snackbar from 'material-ui/Snackbar';
+import {Regions} from '../../../api/site/addComplaint/Regions.js';
+
+Meteor.subscribe('regions');
 
 export default class AddNews extends Component {
 
 
   componentDidMount(){
 
-   var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+
+
+    var widget = uploadcare.Widget('[role=uploadcare-uploader]');
 
     widget.onUploadComplete(function(fileInfo) {
 
@@ -35,6 +45,11 @@ export default class AddNews extends Component {
   constructor(props) {
     super(props);
 
+
+
+
+
+
     this.state = {
       regionValue: 'Выберите регион',
       urlImage: '',
@@ -46,10 +61,7 @@ export default class AddNews extends Component {
       language: 1,
       valforchip: '',
 
-      options : [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two' }
-      ]
+      options : []
 
     };
 
@@ -74,6 +86,20 @@ export default class AddNews extends Component {
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.regionChange = this.regionChange.bind(this);
   }
+
+
+
+  getRegionNames() {
+    return this.props.regions.map((region) => {
+      return {
+        label: region.name_ru,
+        value: region._id
+      }
+    });
+  }
+
+
+
 
   handleEditorChange(e) { this.setState({text: e.target.getContent() });}
 
@@ -241,9 +267,10 @@ export default class AddNews extends Component {
                 </div>
 
 
+                
                 <div className="row">
                   <div className="col s12">
-                    <Select value={this.state.regionValue} name="form-field-name" options={this.state.options} onChange={this.regionChange}/>
+                    <Select value={this.state.regionValue} name="form-field-name" options={this.getRegionNames()} onChange={this.regionChange}/>
                   </div>
                 </div>
 
@@ -263,3 +290,14 @@ export default class AddNews extends Component {
     );
   }
 }
+
+
+AddNews.propTypes = {
+  regions: PropTypes.array.isRequired
+};
+
+export default createContainer(() => {
+  return {
+    regions: Regions.find({}).fetch()
+  }
+}, AddNews);

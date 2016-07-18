@@ -46,6 +46,8 @@ export default class AddComplaint extends Component {
   constructor(props) {
       super(props);
 
+    
+
       this.state = {
         caseCheckboxValue: false,
         rulesOpen: false,

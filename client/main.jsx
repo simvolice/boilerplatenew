@@ -4,7 +4,6 @@ import AddNews from './ui/news/AddNews.jsx';
 import AddBlogRecord from './ui/blog/AddBlogRecord.jsx';
 import AddComplaint from './ui/site/AddComplaint.jsx';
 import Registration from './ui/site/Registration.jsx';
-import Home from './ui/site/Home.jsx';
 
 import ListNews from './ui/news/ListNews.jsx';
 
@@ -31,9 +30,11 @@ function requireAuth(nextState, replace) {
 
 Meteor.startup(function() {
 
-  UPLOADCARE_PUBLIC_KEY = 'f2ffd038e7774979768e';
-  UPLOADCARE_IMAGES_ONLY = true;
-  UPLOADCARE_LOCALE = 'ru';
+    //Настройки uploadcare
+    UPLOADCARE_PUBLIC_KEY = 'f2ffd038e7774979768e';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_LOCALE = 'ru';
+
 
   addLocaleData(enLocaleData);
   addLocaleData(ruLocaleData);
@@ -49,16 +50,18 @@ Meteor.startup(function() {
 
       <MuiThemeProvider>
           <IntlProvider locale="ru">
+
               <Router history={browserHistory}>
                   <Route path="/" component={App}>
-                    <Route path="/home" component={Home}/>
                     <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
                     <Route path="/listnews" component={ListNews} />
                     <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
                     <Route path="/addcomplaint" component={AddComplaint}/>
                     <Route path="/registration" component={Registration}/>
                   </Route>
+
               </Router>
+
           </IntlProvider>
       </MuiThemeProvider>
 
