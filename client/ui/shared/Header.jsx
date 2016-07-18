@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { browserHistory } from 'react-router'
 import LogoutButton from '../auth/LogoutButton.jsx';
-
+import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router';
 export default class Header extends Component {
 
 
@@ -34,15 +34,18 @@ export default class Header extends Component {
         <div style={this.styles.header}>
           {/* Dropdown Structure */}
           <ul id="news_dropdown" className="dropdown-content">
-            <li><a href="/addnews">Добавить новость</a></li>
+            <li><Link to="/addnews">Добавить новость</Link></li>
           </ul>
 
+
           <ul id="complaints_dropdown" className="dropdown-content">
-            <li><a href="/addcomplaint">Добавить жалобу</a></li>
+
+              <li><Link to="/addcomplaint">Добавить жалобу</Link></li>
           </ul>
 
           <ul id="blogs_dropdown" className="dropdown-content">
-            <li><a href="/addblogrecord">Добавить в блог</a></li>
+
+              <li><Link to="/addblogrecord">Добавить запись в блог</Link></li>
           </ul>          
 
           <nav>
