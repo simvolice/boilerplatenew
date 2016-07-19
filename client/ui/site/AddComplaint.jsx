@@ -15,6 +15,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import AutoComplete from 'material-ui/AutoComplete';
 
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
 Meteor.subscribe('regions');
 
@@ -27,6 +29,7 @@ const styles = {
   },
   radioButton: {
     marginBottom: 16,
+    display: 'block'
   },
   checkbox: {
     marginBottom: 16,
@@ -35,10 +38,13 @@ const styles = {
     marginBottom: 16
   },
   card: {
-    height: 280
+    height: 230
   },
   ruleActionLabelStyle: {
     fontSize: 15,
+  },
+  deleteButtonStyle: {
+    marginTop: 20,
   }
 };
 
@@ -46,21 +52,26 @@ export default class AddComplaint extends Component {
   constructor(props) {
       super(props);
 
-    
-
       this.state = {
         caseCheckboxValue: false,
         rulesOpen: false,
         subCategoryNames: [],
         districtNames: [],
         caseCardStyle: {
-          height: 300,
           display: 'none'
         },
         anotherRegionCardStyle: {
           height: 300,
           display: 'none'
-        }
+        },
+        categoryValue: '',
+        categoryText: '',
+        subCategoryValue: '',
+        subCategoryText: '',
+        regionValue: '',
+        regionText: '',
+        districtValue: '',
+        districtText: ''
       };
   }
 
@@ -85,7 +96,32 @@ export default class AddComplaint extends Component {
       };
     });
 
-    this.setState({subCategoryNames});
+    this.setState({
+      subCategoryNames,
+      categoryValue: value.value,
+      categoryText: value.text
+    });
+  }
+
+  handleCategoryInput(categoryText) {
+    this.setState({categoryText})
+  }
+
+  handleSubCategoryUpdate(value) {
+    this.setState({
+      subCategoryValue: value.value,
+      subCategoryText: value.text
+    });
+  }
+
+  handleSubCategoryInput(subCategoryText) {
+    this.setState({subCategoryText})
+  }
+
+  clearAutoComplete(valueNames) {
+    valueNames.forEach((item) => {
+      this.setState({[item]: ''});
+    });
   }
 
   getRegionNames() {
@@ -109,7 +145,26 @@ export default class AddComplaint extends Component {
       };
     });
 
-    this.setState({districtNames});
+    this.setState({
+      districtNames,
+      regionValue: value.value,
+      regionText: value.text
+    });
+  }
+
+  handleRegionInput(regionText) {
+    this.setState({regionText});
+  }
+
+  handleDistrictUpdate(value) {
+    this.setState({
+      districtValue: value.value,
+      districtText: value.text
+    });
+  }
+
+  handleDistrictInput(districtText) {
+    this.setState({districtText});
   }
 
   openRules() {
@@ -124,7 +179,6 @@ export default class AddComplaint extends Component {
     if(isInputChecked) {
       const caseCardStyle = {
         display: '',
-        height: 300,
       };
       this.setState({ caseCardStyle });
     }
@@ -177,32 +231,53 @@ export default class AddComplaint extends Component {
         <Card className="row">
           <CardHeader title="Тип обращения и категория вопроса" />
           <CardText className="row">
-            <div className="col s12">
+            <div className="col s10">
               <AutoComplete
                floatingLabelText="Выберите категорию"
                filter={AutoComplete.caseInsensitiveFilter}
                openOnFocus={true}
                dataSource={this.getCategoryNames()}
                onNewRequest={this.handleCategoryUpdate.bind(this)}
+               onUpdateInput={this.handleCategoryInput.bind(this)}
                fullWidth={true}
+               value={this.state.categoryValue}
+               searchText={this.state.categoryText}
               />
             </div>
-            <div className="col s12">
+            <div className="col s1">
+              <RaisedButton
+                icon={<ActionDelete />}
+                style={styles.deleteButtonStyle}
+                onClick={this.clearAutoComplete.bind(this, ['categoryText', 'categoryValue', 'subCategoryText', 'subCategoryValue'])}
+              />
+            </div>
+            <div className="col s10">
               <AutoComplete
                 floatingLabelText="Выберите под-категорию"
                 filter={AutoComplete.caseInsensitiveFilter}
                 openOnFocus={true}
                 dataSource={this.state.subCategoryNames}
+                onNewRequest={this.handleSubCategoryUpdate.bind(this)}
+                onUpdateInput={this.handleSubCategoryInput.bind(this)}
                 fullWidth={true}
+                value={this.state.subCategoryValue}
+                searchText={this.state.subCategoryText}
+              />
+            </div>
+            <div className="col s1">
+              <RaisedButton
+                icon={<ActionDelete />}
+                style={styles.deleteButtonStyle}
+                onClick={this.clearAutoComplete.bind(this, ['subCategoryText', 'subCategoryValue'])}
               />
             </div>
           </CardText>
         </Card>
         <div className="row">
-          <Card className='col s12' style={styles.card}>
+          <Card className='col s12'>
             <CardHeader title="Обращение" />
-            <CardText>
-                <RadioButtonGroup name="appealTime" defaultSelected="first-time" className="col s6">
+            <CardText className='row'>
+                <RadioButtonGroup name="appealTime" defaultSelected="first-time" className="col s8" style={{display: 'flex'}}>
                   <RadioButton
                     value="first-time"
                     label="Первичное обращение"
@@ -221,14 +296,18 @@ export default class AddComplaint extends Component {
                   style={styles.checkbox}
                   onCheck={this.handleCaseCheckboxChange.bind(this)}
                   checked={this.state.caseCheckboxValue}
-                  className="col s6"
+                  className="col s3"
                 />
             </CardText>
           </Card>
           <Card className="col s12" style={this.state.caseCardStyle}>
             <CardHeader title="Категория" />
             <CardText>
-                <RadioButtonGroup name="appealTime" defaultSelected="first-time" className="col s6">
+                <RadioButtonGroup
+                  name="appealTime"
+                  defaultSelected="first-time"
+                  className="col s12"
+                  style={{display: 'flex'}} >
                   <RadioButton
                     value="civil-case"
                     label="По гражданским делам"
@@ -252,13 +331,14 @@ export default class AddComplaint extends Component {
           </Card>
         </div>
         <div className="row">
-          <Card className="col s12" style={styles.card}>
+          <Card className="col s12">
             <CardHeader title="Куда подать обращение" />
             <CardText>
               <RadioButtonGroup
                 name="appealTime"
                 className="col s12"
-                onChange={this.handleAppealReceiverRadio.bind(this)} >
+                onChange={this.handleAppealReceiverRadio.bind(this)}
+                style={{display: 'flex'}}  >
                 <RadioButton
                   value="central-staff"
                   label="Центральный аппарат"
@@ -277,23 +357,45 @@ export default class AddComplaint extends Component {
           <Card className="col s12"  style={this.state.anotherRegionCardStyle}>
             <CardHeader title="Другой регион" />
             <CardText>
-              <div className="col s12">
+              <div className="col s10">
                 <AutoComplete
                  floatingLabelText="Выберите регион"
                  filter={AutoComplete.caseInsensitiveFilter}
                  openOnFocus={true}
                  dataSource={this.getRegionNames()}
                  onNewRequest={this.handleRegionUpdate.bind(this)}
+                 onUpdateInput={this.handleRegionInput.bind(this)}
                  fullWidth={true}
+                 value={this.state.regionValue}
+                 searchText={this.state.regionText}
                 />
               </div>
-              <div className="col s12">
+              <div className="col s1">
+                <RaisedButton
+                  icon={<ActionDelete />}
+                  style={styles.deleteButtonStyle}
+                  onClick={this.clearAutoComplete.bind(this, ['regionText', 'regionValue', 'districtText', 'districtValue'])}
+                />
+              </div>
+              <div className="col s10">
                 <AutoComplete
                   floatingLabelText="Выберите район"
                   filter={AutoComplete.caseInsensitiveFilter}
                   openOnFocus={true}
                   dataSource={this.state.districtNames}
+                  onNewRequest={this.handleDistrictUpdate.bind(this)}
+                  onUpdateInput={this.handleDistrictInput.bind(this)}
                   fullWidth={true}
+                  value={this.state.districtValue}
+                  searchText={this.state.districtText}
+                  disabled={this.state.districtNames.length === 0}
+                />
+              </div>
+              <div className="col s1">
+                <RaisedButton
+                  icon={<ActionDelete />}
+                  style={styles.deleteButtonStyle}
+                  onClick={this.clearAutoComplete.bind(this, ['districtText', 'districtValue'])}
                 />
               </div>
             </CardText>
@@ -322,12 +424,15 @@ export default class AddComplaint extends Component {
         </Card>
         <Card className="row">
           <CardText>
-            <p>
-              Нажимая кнопку "подать обращение", вы соглашаетесь с
-              <a href="#" onClick={this.openRules.bind(this)} > правилами
-              подачи обращения</a>.
-            </p>
-            <br/><RaisedButton labelStyle={styles.ruleActionLabelStyle} label="подать обращение" primary={true} />
+            <div className="row" style={{textAlign: 'right'}}>
+              <span>
+                Нажимая кнопку "подать обращение", вы соглашаетесь с
+                <a href="#" onClick={this.openRules.bind(this)} > правилами
+                подачи обращения</a>&nbsp;&nbsp;
+              </span>
+              <RaisedButton labelStyle={styles.ruleActionLabelStyle} label="подать обращение" primary={true} />
+              <br/><span style={{color: 'grey'}}> Размер загружаемого файла не может превышать 10 МБ</span>
+            </div>
             <Dialog
               title="Правила подачи обращения"
               subtitle="Уважаемый посетитель!"

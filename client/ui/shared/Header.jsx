@@ -40,13 +40,13 @@ export default class Header extends Component {
 
           <ul id="complaints_dropdown" className="dropdown-content">
 
-              <li><Link to="/addcomplaint">Добавить жалобу</Link></li>
+              <li><Link to="/addcomplaint">Подать обращение</Link></li>
           </ul>
 
           <ul id="blogs_dropdown" className="dropdown-content">
 
               <li><Link to="/addblogrecord">Добавить запись в блог</Link></li>
-          </ul>          
+          </ul>
 
           <nav>
             <div className="nav-wrapper">
@@ -54,7 +54,7 @@ export default class Header extends Component {
               <ul className="right hide-on-med-and-down">
 
                 {/* Dropdown Trigger */}
-                <li><a className="dropdown-button" href="#!" data-activates="complaints_dropdown">Работа с жалобами<i className="material-icons right">arrow_drop_down</i></a></li>
+                <li><a className="dropdown-button" href="#!" data-activates="complaints_dropdown">Работа с обращениями<i className="material-icons right">arrow_drop_down</i></a></li>
                 <li><a className="dropdown-button" href="#!" data-activates="news_dropdown">Работа с новостями<i className="material-icons right">arrow_drop_down</i></a></li>
                 <li><a className="dropdown-button" href="#!" data-activates="blogs_dropdown">Блог<i className="material-icons right">arrow_drop_down</i></a></li>
                 <li>
