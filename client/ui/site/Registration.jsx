@@ -10,6 +10,9 @@ import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Checkbox from 'material-ui/Checkbox';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
 Meteor.subscribe('regions');
@@ -21,6 +24,9 @@ const styles = {
   },
   checkbox: {
     marginBottom: 15
+  },
+  deleteButtonStyle: {
+    marginTop: 20,
   }
 };
 
@@ -30,7 +36,11 @@ export default class Registration extends Component {
     super(props);
 
     this.state = {
-      districtNames: []
+      districtNames: [],
+      regionValue: '',
+      regionText: '',
+      districtValue: '',
+      districtText: ''
     }
   }
 
@@ -55,7 +65,32 @@ export default class Registration extends Component {
       };
     });
 
-    this.setState({districtNames});
+    this.setState({
+      districtNames,
+      regionValue: value.value,
+      regionText: value.text
+    });
+  }
+
+  handleRegionInput(regionText) {
+    this.setState({regionText});
+  }
+
+  handleDistrictUpdate(value) {
+    this.setState({
+      districtValue: value.value,
+      districtText: value.text
+    });
+  }
+
+  handleDistrictInput(districtText) {
+    this.setState({districtText});
+  }
+
+  clearAutoComplete(valueNames) {
+    valueNames.forEach((item) => {
+      this.setState({[item]: ''});
+    });
   }
 
   render() {
@@ -64,7 +99,6 @@ export default class Registration extends Component {
         <Card className="row">
           <CardTitle
             title="Регистрация"
-            subtitle="воспользуйтесь возможностью написать какому-нибудь депутату"
           />
         </Card>
         <Card className="row">
@@ -86,36 +120,30 @@ export default class Registration extends Component {
           />
           <Divider />
           <CardText className="row">
-            <TextField
-              hintText="имя"
-              className="col s3 offset-s1"
-            />
-            <TextField
-              hintText="фамилия"
-              className="col s3 offset-s1"
-            />
-            <TextField
-              hintText="отчество"
-              className="col s2 offset-s1"
-            />
-          </CardText>
-        </Card>
-        <Card className="row">
-          <CardText className="row">
-            <TextField
-              hintText="ИИН"
-              className="col s3 offset-s1"
-            />
-            <TextField
-              hintText="пол"
-              className="col s3 offset-s1"
-              disabled={true}
-            />
-            <TextField
-              hintText="дата рождения"
-              className="col s2 offset-s1"
-              disabled={true}
-            />
+            <div className="col s4">
+              <TextField
+                hintText="имя"
+                fullWidth={true}
+              />
+            </div>
+            <div className="col s4">
+              <TextField
+                hintText="фамилия"
+                fullWidth={true}
+              />
+            </div>
+            <div className="col s4">
+              <TextField
+                hintText="отчество"
+                fullWidth={true}
+              />
+            </div>
+            <div className="col s4">
+              <TextField
+                hintText="ИИН"
+                fullWidth={true}
+              />
+            </div>
           </CardText>
         </Card>
         <Card className="row">
@@ -142,22 +170,46 @@ export default class Registration extends Component {
           />
           <Divider />
           <CardText className="row">
-            <div className="col s4 offset-s1">
+            <div className="col s7 offset-s1">
               <AutoComplete
                floatingLabelText="Выберите регион"
                filter={AutoComplete.caseInsensitiveFilter}
                openOnFocus={true}
                dataSource={this.getRegionNames()}
                onNewRequest={this.handleRegionUpdate.bind(this)}
+               onUpdateInput={this.handleRegionInput.bind(this)}
                fullWidth={true}
+               value={this.state.regionValue}
+               searchText={this.state.regionText}
               />
             </div>
-            <div className="col s4 offset-s1">
+            <div className="col s1">
+              <RaisedButton
+                icon={<ActionDelete />}
+                style={styles.deleteButtonStyle}
+                onClick={this.clearAutoComplete.bind(this, ['regionText', 'regionValue', 'districtText', 'districtValue'])}
+                fullWidth={true}
+              />
+            </div>
+            <div className="col s7 offset-s1">
               <AutoComplete
                 floatingLabelText="Выберите район"
                 filter={AutoComplete.caseInsensitiveFilter}
                 openOnFocus={true}
                 dataSource={this.state.districtNames}
+                onNewRequest={this.handleDistrictUpdate.bind(this)}
+                onUpdateInput={this.handleDistrictInput.bind(this)}
+                fullWidth={true}
+                value={this.state.districtValue}
+                searchText={this.state.districtText}
+                disabled={this.state.districtNames.length === 0}
+              />
+            </div>
+            <div className="col s1">
+              <RaisedButton
+                icon={<ActionDelete />}
+                style={styles.deleteButtonStyle}
+                onClick={this.clearAutoComplete.bind(this, ['districtText', 'districtValue'])}
                 fullWidth={true}
               />
             </div>
@@ -167,125 +219,6 @@ export default class Registration extends Component {
                 fullWidth={true}
               />
             </div>
-          </CardText>
-        </Card>
-        <Card className="row">
-          <CardTitle
-            title="Занятость"
-            subtitle="укажите свою занятость"
-          />
-          <Divider />
-          <CardText className="row">
-            <RadioButtonGroup className="col s4" name="employment" style={{display: 'flex'}}>
-              <RadioButton
-                value="light"
-                label="Я трудоустроен(-а)"
-                className="col s4"
-              />
-              <RadioButton
-                value="not_light"
-                label="Я безработный(-ая)"
-                className="col s4"
-              />
-              <RadioButton
-                value="ludicrous"
-                label="Я самозанятый(-ая)"
-                className="col s4"
-              />
-            </RadioButtonGroup>
-          </CardText>
-        </Card>
-        <Card className="row">
-          <CardTitle
-            title="Категория граждан"
-            subtitle="выберите категории, к которым вы относитесь"
-          />
-          <Divider />
-          <CardText className="row">
-              <div className="col s3">
-                <Checkbox
-                  label="Молодежь"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Ветеран тыла"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Инвалид"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Пенсионер"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Молодая семья"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Ветеран войны"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Сирота"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Студент"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Многодетная семья"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Ветеран труда"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Военный"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="col s3">
-                <Checkbox
-                  label="Прочие"
-                  style={styles.checkbox}
-                  fullWidth={true}
-                />
-              </div>
           </CardText>
         </Card>
         <Card className="row">

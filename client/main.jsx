@@ -14,7 +14,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-
 import {addLocaleData, IntlProvider} from 'react-intl';
 
 import enLocaleData from 'react-intl/locale-data/en';
