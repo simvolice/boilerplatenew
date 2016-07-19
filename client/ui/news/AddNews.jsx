@@ -19,6 +19,9 @@ import {NewsRecords} from '../../../api/site/news/NewsRecords.js';
 import Snackbar from 'material-ui/Snackbar';
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
 
+
+import lodash from 'lodash';
+
 Meteor.subscribe('regions');
 
 export default class AddNews extends Component {
@@ -172,10 +175,12 @@ export default class AddNews extends Component {
   // will called from child LanguageSelect component with language_id
   handleLanguageChange(language) { this.setState({language: language}); }
 
+
   add_news_record(){
     new_record = {
       title: this.state.title,
-      text: this.state.text,
+      text: $(this.state.text).text(),
+      truncateText: lodash.truncate($(this.state.text).text()),
       tags: [],
       urlImage: this.state.urlImage,
       language: this.state.language,

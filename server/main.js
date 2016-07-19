@@ -5,6 +5,8 @@ import { Regions } from '../api/site/addComplaint/Regions.js';
 
 Meteor.startup(() => {
 
+
+
   if(Meteor.users.find().count() == 0)
     Accounts.createUser({username: 'corehook', email: 'corehook@gmail.com', password: 'corehook', profile: {name: 'corehook'}})
 

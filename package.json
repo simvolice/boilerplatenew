@@ -5,6 +5,7 @@
     "start": "meteor"
   },
   "dependencies": {
+    "lodash": "^4.13.1",
     "material-ui": "^0.15.2",
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.14.1",

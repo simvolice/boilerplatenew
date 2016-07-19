@@ -20,6 +20,6 @@ export default class AuthBox extends Component {
 
         </div>
       );
-    }    
+    }
   }
 }
