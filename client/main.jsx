@@ -57,6 +57,8 @@ Meteor.startup(function() {
                     <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
                     <Route path="/listnews" component={ListNews} />
                     <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
+                    <Route path="/addcomplaint" component={AddComplaint}/>
+                    <Route path="/registration" component={Registration}/>
                   </Route>
 
               </Router>
