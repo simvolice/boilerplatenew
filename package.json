@@ -16,7 +16,8 @@
     "react-router": "^2.5.2",
     "react-select": "^1.0.0-beta13",
     "react-tap-event-plugin": "^1.0.0",
-    "react-tinymce": "^0.5.1"
+    "react-tinymce": "^0.5.1",
+    "slug": "^0.9.1"
   },
   "devDependencies": {
     "react-addons-pure-render-mixin": "^15.2.1"
