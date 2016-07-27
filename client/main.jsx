@@ -4,6 +4,8 @@ import AddNews from './ui/news/AddNews.jsx';
 import AddBlogRecord from './ui/blog/AddBlogRecord.jsx';
 import AddComplaint from './ui/site/AddComplaint.jsx';
 import Registration from './ui/site/Registration.jsx';
+import DisqusCommentingOne from './ui/site/disqusCommentingOne.jsx';
+import DisqusCommentingTwo from './ui/site/disqusCommentingTwo.jsx';
 
 import ListNews from './ui/news/ListNews.jsx';
 
@@ -29,15 +31,14 @@ function requireAuth(nextState, replace) {
 
 Meteor.startup(function() {
 
-    //Настройки uploadcare
-    UPLOADCARE_PUBLIC_KEY = 'f2ffd038e7774979768e';
-    UPLOADCARE_IMAGES_ONLY = true;
-    UPLOADCARE_LOCALE = 'ru';
-    UPLOADCARE_PREVIEW_STEP = true;
-    UPLOADCARE_CLEARABLE = true;
+  //Настройки uploadcare
+  UPLOADCARE_PUBLIC_KEY = 'f2ffd038e7774979768e';
+  UPLOADCARE_IMAGES_ONLY = true;
+  UPLOADCARE_LOCALE = 'ru';
+  UPLOADCARE_PREVIEW_STEP = true;
+  UPLOADCARE_CLEARABLE = true;
 
-
-    addLocaleData(enLocaleData);
+  addLocaleData(enLocaleData);
   addLocaleData(ruLocaleData);
   addLocaleData(kkLocaleData);
 
@@ -49,22 +50,24 @@ Meteor.startup(function() {
 
   ReactDOM.render((
 
-      <MuiThemeProvider>
-          <IntlProvider locale="ru">
+    <MuiThemeProvider>
+      <IntlProvider locale="ru">
 
-              <Router history={browserHistory}>
-                  <Route path="/" component={App}>
-                    <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
-                    <Route path="/listnews" component={ListNews} />
-                    <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
-                    <Route path="/addcomplaint" component={AddComplaint}/>
-                    <Route path="/registration" component={Registration}/>
-                  </Route>
+        <Router history={browserHistory}>
+          <Route path="/" component={App}>
+            <Route path="/addnews" component={AddNews} onEnter={requireAuth}/>
+            <Route path="/listnews" component={ListNews} />
+            <Route path="/addblogrecord" component={AddBlogRecord} onEnter={requireAuth}/>
+            <Route path="/addcomplaint" component={AddComplaint}/>
+            <Route path="/registration" component={Registration}/>
+            <Route path="/disquscommentingone" component={DisqusCommentingOne}/>
+            <Route path="/disquscommentingtwo" component={DisqusCommentingTwo}/>
+          </Route>
 
-              </Router>
+        </Router>
 
-          </IntlProvider>
-      </MuiThemeProvider>
+      </IntlProvider>
+    </MuiThemeProvider>
 
 
   ), root);

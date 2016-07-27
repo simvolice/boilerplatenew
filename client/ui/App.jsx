@@ -5,8 +5,6 @@ import AuthBox from './auth/AuthBox.jsx';
 
 export default class App extends Component {
 
-
-
   render() {
     return (
       <div>
@@ -27,11 +25,10 @@ export default class App extends Component {
         </div>
 
               <Footer />
- 
+
 
 
       </div>
     );
   }
 }
-
