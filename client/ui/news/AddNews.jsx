@@ -19,6 +19,7 @@ import {NewsRecords} from '../../../api/site/news/NewsRecords.js';
 import Snackbar from 'material-ui/Snackbar';
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
 
+import slug from 'slug';
 
 import lodash from 'lodash';
 
@@ -176,6 +177,8 @@ export default class AddNews extends Component {
   handleLanguageChange(language) { this.setState({language: language}); }
 
 
+
+
   add_news_record(){
     new_record = {
       title: this.state.title,
@@ -185,7 +188,8 @@ export default class AddNews extends Component {
       urlImage: this.state.urlImage,
       language: this.state.language,
       createdAt: moment().format('LLLL'),
-      region: this.state.regionValue
+      region: this.state.regionValue,
+      slug: '/' + slug(this.state.title, {lower: true})
     };
 
     // Save tags
