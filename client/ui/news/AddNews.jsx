@@ -182,14 +182,14 @@ export default class AddNews extends Component {
   add_news_record(){
     new_record = {
       title: this.state.title,
-      text: $(this.state.text).text(),
+      text: this.state.text,
       truncateText: lodash.truncate($(this.state.text).text()),
       tags: [],
       urlImage: this.state.urlImage,
       language: this.state.language,
       createdAt: moment().format('LLLL'),
       region: this.state.regionValue,
-      slug: '/' + slug(this.state.title, {lower: true})
+      slug: slug(this.state.title, {lower: true})
     };
 
     // Save tags
