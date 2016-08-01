@@ -2,6 +2,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 
 import {Meteor} from 'meteor/meteor';
 
+
 import React, {Component, PropTypes} from 'react';
 import moment from 'moment/min/moment-with-locales.min';
 moment.locale('ru');
@@ -18,6 +19,7 @@ import LanguageSelect from '../shared/LanguageSelect.jsx';
 import {NewsRecords} from '../../../api/site/news/NewsRecords.js';
 import Snackbar from 'material-ui/Snackbar';
 import {Regions} from '../../../api/site/addComplaint/Regions.js';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 import slug from 'slug';
 
@@ -88,7 +90,9 @@ export default class AddNews extends Component {
     this.add_news_record = this.add_news_record.bind(this);
     this.handleNotificationClose = this.handleNotificationClose.bind(this);
     this.handleDynamicChange = this.handleDynamicChange.bind(this);
-    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.handleEditorChangeRu = this.handleEditorChangeRu.bind(this);
+    this.handleEditorChangeKz = this.handleEditorChangeKz.bind(this);
+    this.handleEditorChangeEn = this.handleEditorChangeEn.bind(this);
     this.regionChange = this.regionChange.bind(this);
   }
 
@@ -106,7 +110,38 @@ export default class AddNews extends Component {
 
 
 
-  handleEditorChange(e) { this.setState({text: e.target.getContent() });}
+  handleEditorChangeRu(e) {
+
+
+    this.setState({text: e.target.getContent() });
+
+
+
+
+  }
+
+
+
+  handleEditorChangeKz(e) {
+
+
+    this.setState({text_kz: e.target.getContent() });
+
+
+
+
+  }
+
+
+  handleEditorChangeEn(e) {
+
+
+    this.setState({text_en: e.target.getContent() });
+
+
+
+
+  }
 
   handleNotificationClose(event) { this.setState({open: false}); }
 
@@ -182,8 +217,14 @@ export default class AddNews extends Component {
   add_news_record(){
     new_record = {
       title: this.state.title,
+      title_kz: this.state.titlekz,
+      title_en: this.state.titleen,
       text: this.state.text,
+      text_kz: this.state.text_kz,
+      text_en: this.state.text_en,
       truncateText: lodash.truncate($(this.state.text).text()),
+      truncateText_kz: lodash.truncate($(this.state.text_kz).text()),
+      truncateText_en: lodash.truncate($(this.state.text_en).text()),
       tags: [],
       urlImage: this.state.urlImage,
       language: this.state.language,
@@ -229,6 +270,23 @@ export default class AddNews extends Component {
                   </div>
                 </div>
 
+                <div className="row">
+                  <div className="col s12">
+                    <TextField hintText="Тақырып" data-name="titlekz" onChange={this.handleDynamicChange} />
+                  </div>
+                </div>
+
+
+
+                <div className="row">
+                  <div className="col s12">
+                    <TextField hintText="Title" data-name="titleen" onChange={this.handleDynamicChange} />
+                  </div>
+                </div>
+
+
+
+
                 {/* News Langage */}
                 <div className="row">
                   <div className="col s12">
@@ -241,14 +299,50 @@ export default class AddNews extends Component {
                 <div className="row">
                   <div className="col s12">
 
-                    <TinyMCE
-                        content="<p>Начни писать текст новости здесь...</p>"
-                        config={{
-                          plugins: 'code',
-                          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-                        }}
-                        onChange={this.handleEditorChange}
-                    />
+
+
+                    <Tabs>
+                      <Tab label="Текст на русском" >
+                        <div>
+                          <TinyMCE
+                              content="<p>Начни писать текст новости здесь...</p>"
+                              config={{
+                                plugins: 'code',
+                                toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                              }}
+                              onChange={this.handleEditorChangeRu}
+                          />
+
+                        </div>
+                      </Tab>
+                      <Tab label="Текст на казахском" >
+                        <TinyMCE
+                            content="<p>Начни писать текст новости здесь...</p>"
+                            config={{
+                              plugins: 'code',
+                              toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                            }}
+                            onChange={this.handleEditorChangeKz}
+                        />
+                      </Tab>
+                      <Tab
+                          label="Текст на английском">
+                        <TinyMCE
+                            content="<p>Начни писать текст новости здесь...</p>"
+                            config={{
+                              plugins: 'code',
+                              toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                            }}
+                            onChange={this.handleEditorChangeEn}
+                        />
+                      </Tab>
+                    </Tabs>
+
+
+
+
+
+
                   </div>
                 </div>
 

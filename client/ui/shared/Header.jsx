@@ -54,7 +54,6 @@ export default class Header extends Component {
               <ul className="right hide-on-med-and-down">
 
                 {/* Dropdown Trigger */}
-                <li><a className="dropdown-button" href="#!" data-activates="complaints_dropdown">Работа с обращениями<i className="material-icons right">arrow_drop_down</i></a></li>
                 <li><a className="dropdown-button" href="#!" data-activates="news_dropdown">Работа с новостями<i className="material-icons right">arrow_drop_down</i></a></li>
                 <li><a className="dropdown-button" href="#!" data-activates="blogs_dropdown">Блог<i className="material-icons right">arrow_drop_down</i></a></li>
                 <li>
